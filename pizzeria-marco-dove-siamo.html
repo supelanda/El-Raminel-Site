@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500" rel="stylesheet">
+<link rel="stylesheet" href="pizzeria-marco-base.css">
+<link rel="stylesheet" href="pizzeria-marco-responsive.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dove Siamo — El Raminel, Rovereto</title>
+<style>
+/* NAV */
+  /* PAGE HERO */
+  .page-hero-inner { max-width:580px; }
+  /* Decorative compass in hero */
+  .hero-compass {
+    position:absolute; right:6rem; top:50%; transform:translateY(-50%);
+    width:220px; height:220px; opacity:.06;
+    pointer-events:none;
+    opacity:0; animation:fadeUp 1s .6s forwards;
+  }
+  /* MAIN LAYOUT */
+  .main-wrap {
+    position:relative; z-index:1;
+    display:grid; grid-template-columns:1fr 1fr;
+    min-height:80vh;
+    border-bottom:1px solid var(--border);
+  }
+  /* ── STYLED MAP ── */
+  .map-panel {
+    position:relative; overflow:hidden;
+    background:var(--deep);
+    border-right:1px solid var(--border);
+  }
+  /* Subtle dot-grid background for the map area */
+  .map-panel::before {
+    content:''; position:absolute; inset:0;
+    background-image: radial-gradient(circle, rgba(237,187,100,.14) 1px, transparent 1px);
+    background-size:28px 28px;
+    background-position:14px 14px;
+    pointer-events:none;
+  }
+  .map-svg-wrap {
+    position:relative; width:100%; height:100%; min-height:600px;
+  }
+  /* Remove SVG-specific rule that no longer applies */
+  /* Map watermark label */
+  .map-watermark {
+    position:absolute; bottom:1.5rem; left:50%; transform:translateX(-50%);
+    font-size:.65rem; letter-spacing:.28em; text-transform:uppercase;
+    color:var(--muted); opacity:.45;
+    display:flex; align-items:center; gap:.6rem;
+  }
+  .map-watermark::before, .map-watermark::after {
+    content:''; width:30px; height:1px; background:currentColor;
+  }
+
+  /* Map corner ornament */
+  .map-corner {
+    position:absolute; top:1.2rem; right:1.2rem;
+    width:60px; height:60px; opacity:.25;
+  }
+  /* Open Maps button on map */
+  .map-open-btn {
+    position:absolute; bottom:3.5rem; left:50%; transform:translateX(-50%);
+    font-family:'Lora',serif;
+    font-size:.82rem; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--gold); text-decoration:none;
+    background:rgba(9,18,20,.85); border:1px solid var(--border);
+    padding:.6rem 1.6rem;
+    backdrop-filter:blur(8px);
+    transition:border-color .2s, background .2s;
+    white-space:nowrap;
+  }
+  .map-open-btn:hover { border-color:var(--gold); background:rgba(237,187,100,.1); }
+  /* ── INFO PANEL ── */
+  .info-panel {
+    padding:5rem 4rem;
+    display:flex; flex-direction:column; gap:3.5rem;
+  }
+  .info-block {}
+  .info-block-label {
+    font-size:.75rem; letter-spacing:.32em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:1rem; display:flex; align-items:center; gap:.8rem;
+  }
+  .info-block-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+  .info-address {
+    font-family:'Fraunces',serif;
+    font-size:1.5rem; line-height:1.4; color:var(--cream);
+  }
+  .info-address-sub {
+    font-size:.95rem; color:var(--muted); margin-top:.5rem; font-style:italic;
+  }
+  /* Hours table */
+  .hours-table { width:100%; }
+  .hours-row {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:.55rem 0; border-bottom:1px solid rgba(237,187,100,.07);
+    font-size:1rem;
+  }
+  .hours-row:last-child { border-bottom:none; }
+  .hours-row .day { color:var(--muted); font-size:.95rem; }
+  .hours-row .time { color:var(--cream); }
+  .hours-row.today .day,
+  .hours-row.today .time { color:var(--gold); }
+  .today-badge {
+    font-size:.6rem; letter-spacing:.18em; text-transform:uppercase;
+    background:rgba(237,187,100,.15); color:var(--gold);
+    padding:.2rem .55rem; border:1px solid var(--border); margin-left:.5rem;
+  }
+  .hours-row.closed .time { color:var(--muted); opacity:.5; }
+  /* Services */
+  .services-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:.7rem;
+  }
+  .service-item {
+    display:flex; align-items:center; gap:.7rem;
+    font-size:.9rem; color:var(--muted); padding:.6rem .9rem;
+    border:1px solid var(--border);
+    transition:border-color .2s, color .2s;
+  }
+  .service-item:hover { border-color:rgba(237,187,100,.4); color:var(--cream); }
+  .service-icon { font-size:1.1rem; flex-shrink:0; }
+  /* Transport */
+  .transport-list { display:flex; flex-direction:column; gap:.8rem; }
+  .transport-item {
+    display:flex; gap:1rem; align-items:flex-start;
+  }
+  .transport-icon {
+    width:2.2rem; height:2.2rem; border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1rem; flex-shrink:0; color:var(--gold);
+  }
+  .transport-text { font-size:.9rem; color:var(--muted); }
+  .transport-text strong { display:block; color:var(--cream); font-size:.95rem; margin-bottom:.15rem; }
+  /* CTA buttons */
+  .cta-row { display:flex; gap:1rem; flex-wrap:wrap; padding-top:1rem; }
+  /* ── BOOKING MODAL ── */
+  .modal-overlay {
+    position:fixed; inset:0; z-index:500;
+    background:rgba(8,15,18,.88); backdrop-filter:blur(6px);
+    display:flex; align-items:center; justify-content:center;
+    padding:1.2rem;
+    opacity:0; pointer-events:none;
+    transition:opacity .3s ease;
+  }
+  .modal-overlay.open { opacity:1; pointer-events:all; }
+  .modal-box {
+    width:100%; max-width:520px;
+    background:var(--charcoal);
+    border:1px solid var(--border);
+    padding:2.8rem 2.6rem 2.4rem;
+    position:relative;
+    transform:translateY(16px);
+    transition:transform .3s ease;
+    max-height:90vh; overflow-y:auto;
+  }
+  .modal-overlay.open .modal-box { transform:translateY(0); }
+  .modal-close {
+    position:absolute; top:1rem; right:1.2rem;
+    background:none; border:none; color:var(--muted);
+    font-size:1.4rem; cursor:pointer; line-height:1;
+    transition:color .2s;
+  }
+  .modal-close:hover { color:var(--cream); }
+  .modal-eyebrow {
+    font-size:.72rem; letter-spacing:.35em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:.6rem; display:block;
+  }
+  .modal-title {
+    font-family:'Fraunces',serif;
+    font-size:1.9rem; font-weight:700; color:var(--cream);
+    line-height:1.1; margin-bottom:1.8rem;
+  }
+  .modal-title em { font-style:italic; color:var(--gold-lt); }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .form-group { margin-bottom:1.1rem; }
+  .form-group label {
+    display:block; font-size:.7rem; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:.4rem;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width:100%; font-family:'Lora',serif; font-size:1rem;
+    background:rgba(14,28,32,.9); border:1px solid var(--border);
+    color:var(--cream); padding:.7rem .9rem; outline:none;
+    transition:border-color .2s; appearance:none;
+  }
+  .form-group select {
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238a7d68'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right .8rem center; padding-right:2rem;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color:rgba(237,187,100,.6); }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color:var(--muted); font-style:italic; }
+  .form-group textarea { resize:vertical; min-height:80px; }
+  .form-submit {
+    width:100%; margin-top:.6rem;
+    font-family:'Lora',serif;
+    font-size:1rem; letter-spacing:.2em; text-transform:uppercase; font-weight:600;
+    background:var(--gold); color:var(--ink);
+    border:none; padding:.95rem; cursor:pointer;
+    transition:background .2s, opacity .2s;
+  }
+  .form-submit:hover:not(:disabled) { background:var(--gold-lt); }
+  .form-submit:disabled { opacity:.55; cursor:not-allowed; }
+  .form-error {
+    margin-top:.8rem; padding:.65rem .9rem;
+    background:rgba(140,46,34,.18); border:1px solid rgba(200,80,60,.3);
+    color:#e08080; font-size:.9rem; font-style:italic;
+    display:none;
+  }
+  .form-error.show { display:block; }
+  /* Toast notification */
+  .toast-booking {
+    position:fixed; bottom:1.6rem; right:1.6rem; z-index:9999;
+    padding:1rem 1.5rem; max-width:340px;
+    background:#1e3028; border:1px solid #3a6040; color:#8fd898;
+    font-family:'Lora',serif; font-size:1rem; font-style:italic;
+    box-shadow:0 8px 32px rgba(0,0,0,.5);
+    transform:translateY(12px); opacity:0;
+    transition:opacity .35s ease, transform .35s ease;
+    pointer-events:none;
+  }
+  .toast-booking.show { opacity:1; transform:translateY(0); }
+
+  @media(max-width:600px){
+    .modal-box { padding:2rem 1.4rem 1.8rem; }
+    .form-row { grid-template-columns:1fr; }
+  }
+  /* ── NEIGHBOURHOOD ── */
+  .neighbourhood {
+    position:relative; z-index:1;
+    padding:6rem 4rem;
+    border-bottom:1px solid var(--border);
+  }
+  .neighbourhood h2 {
+    font-family:'Fraunces',serif;
+    font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:700; color:var(--cream);
+    margin-bottom:.8rem;
+  }
+  .neighbourhood h2 em { font-style:italic; color:var(--gold-lt); }
+  .neighbourhood-sub { font-size:1.05rem; color:var(--muted); max-width:520px; margin-bottom:3rem; }
+  .poi-grid {
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:var(--border); border:1px solid var(--border);
+  }
+  .poi-item {
+    background:var(--charcoal); padding:2rem 1.5rem;
+    transition:background .25s;
+  }
+  .poi-item:hover { background:#16282e; }
+  .poi-emoji { font-size:1.8rem; margin-bottom:.7rem; display:block; }
+  .poi-name {
+    font-family:'Fraunces',serif;
+    font-size:1rem; font-weight:600; color:var(--cream); margin-bottom:.35rem;
+  }
+  .poi-desc { font-size:.85rem; color:var(--muted); line-height:1.45; }
+  .poi-dist {
+    margin-top:.7rem; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--gold); opacity:.7;
+  }
+  /* FOOTER */
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @media(max-width:900px){
+    .hero-compass { display:none; }
+    .main-wrap { grid-template-columns:1fr; }
+    .map-panel { border-right:none; border-bottom:1px solid var(--border); }
+    .map-svg-wrap { min-height:400px; }
+    .info-panel { padding:3rem 1.5rem; }
+    .neighbourhood { padding:4rem 1.5rem; }
+    .poi-grid { grid-template-columns:1fr 1fr; }
+    .services-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">El <span>Raminel</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">Storia</a></li>
+    <li><a href="pizzeria-marco-menu.html">Menu</a></li>
+    <li><a href="#" class="active">Dove siamo</a></li>
+    <li><a href="pizzeria-marco-asporto.html">Asporto</a></li>
+    </ul>
+  <a href="index.html" class="nav-cta">Home</a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Apri menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<!-- HERO -->
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <span class="eyebrow">Rovereto · Trentino</span>
+    <h1 class="page-title">Trovaci<em>al centro.</em></h1>
+    <p class="page-sub">Lungo Corso Bettini nel cuore di Rovereto, a due passi dal MART e dal centro storico — facile da raggiungere, impossibile dimenticare.</p>
+  </div>
+  <!-- Decorative compass rose -->
+  <svg class="hero-compass" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="100" cy="100" r="90" fill="none" stroke="#edbb64" stroke-width="1"/>
+    <circle cx="100" cy="100" r="70" fill="none" stroke="#edbb64" stroke-width=".5" stroke-dasharray="4,6"/>
+    <circle cx="100" cy="100" r="50" fill="none" stroke="#edbb64" stroke-width="1"/>
+    <line x1="100" y1="10" x2="100" y2="190" stroke="#edbb64" stroke-width=".5"/>
+    <line x1="10" y1="100" x2="190" y2="100" stroke="#edbb64" stroke-width=".5"/>
+    <line x1="29" y1="29" x2="171" y2="171" stroke="#edbb64" stroke-width=".3"/>
+    <line x1="171" y1="29" x2="29" y2="171" stroke="#edbb64" stroke-width=".3"/>
+    <polygon points="100,10 94,45 100,40 106,45" fill="#edbb64"/>
+    <polygon points="100,190 94,155 100,160 106,155" fill="#edbb64" opacity=".4"/>
+    <polygon points="10,100 45,94 40,100 45,106" fill="#edbb64" opacity=".4"/>
+    <polygon points="190,100 155,94 160,100 155,106" fill="#edbb64" opacity=".4"/>
+    <text x="100" y="7" text-anchor="middle" fill="#edbb64" font-size="10" font-family="serif">N</text>
+    <text x="100" y="197" text-anchor="middle" fill="#edbb64" font-size="8" font-family="serif" opacity=".5">S</text>
+    <text x="196" y="104" text-anchor="end" fill="#edbb64" font-size="8" font-family="serif" opacity=".5">E</text>
+    <text x="4" y="104" text-anchor="start" fill="#edbb64" font-size="8" font-family="serif" opacity=".5">O</text>
+    <circle cx="100" cy="100" r="6" fill="#edbb64"/>
+    <circle cx="100" cy="100" r="3" fill="#0c1a1e"/>
+  </svg>
+</section>
+<!-- MAIN: MAP + INFO -->
+<div class="main-wrap">
+  <!-- GOOGLE MAPS -->
+  <div class="map-panel">
+    <div class="map-svg-wrap" style="padding:0; position:relative; overflow:hidden;">
+      <iframe
+        src="https://maps.google.com/maps?q=El+Raminel+Rovereto+Corso+Bettini&output=embed&z=16"
+        width="100%"
+        height="100%"
+        style="position:absolute; inset:0; width:100%; height:100%; border:0; display:block; filter: saturate(.7) contrast(1.05) brightness(.88) hue-rotate(180deg);"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="El Raminel — Corso Bettini, Rovereto"
+      ></iframe>
+    </div>
+    <a href="https://maps.google.com/?q=El+Raminel+Rovereto+Corso+Bettini+Vicolo+Paganini" target="_blank" class="map-open-btn">
+      Apri in Google Maps →
+    </a>
+    <div class="map-watermark">Rovereto · Trentino-Alto Adige</div>
+  </div>
+  <!-- INFO PANEL -->
+  <div class="info-panel reveal">
+    <div class="info-block">
+      <div class="info-block-label">Indirizzo</div>
+      <div class="info-address">Corso Bettini, 48<br>38068 Rovereto (TN)</div>
+      <div class="info-address-sub">Nei pressi del MART · Corso Bettini</div>
+    </div>
+    <div class="info-block">
+      <div class="info-block-label">Orari di apertura</div>
+      <table class="hours-table">
+        <tr class="hours-row"><td class="day">Lunedì</td><td class="time">11:30–14:30 · 18:00–22:00</td></tr>
+        <tr class="hours-row"><td class="day">Martedì</td><td class="time">11:30–14:30 · 18:00–22:00</td></tr>
+        <tr class="hours-row"><td class="day">Mercoledì</td><td class="time">11:30–14:30 · 18:00–22:00</td></tr>
+        <tr class="hours-row"><td class="day">Giovedì</td><td class="time">11:30–14:30 · 18:00–22:00</td></tr>
+        <tr class="hours-row"><td class="day">Venerdì</td><td class="time">11:30–14:30 · 18:00–22:30</td></tr>
+        <tr class="hours-row"><td class="day">Sabato</td><td class="time">11:30–14:30 · 18:00–22:30</td></tr>
+        <tr class="hours-row"><td class="day">Domenica</td><td class="time">18:00–22:00</td></tr>
+      </table>
+    </div>
+    <div class="info-block">
+      <div class="info-block-label">Servizi disponibili</div>
+      <div class="services-grid">
+        <div class="service-item"><span class="service-icon">🍕</span>Consumazione sul posto</div>
+        <div class="service-item"><span class="service-icon">📦</span>Asporto</div>
+        <div class="service-item"><span class="service-icon">🛵</span>Consegna a domicilio</div>
+        <div class="service-item"><span class="service-icon">☀️</span>Terrazza estiva</div>
+        <div class="service-item"><span class="service-icon">🐾</span>Animali benvenuti</div>
+        <div class="service-item"><span class="service-icon">🚗</span>Parcheggio comodo</div>
+        <div class="service-item"><span class="service-icon">🌾</span>Impasto integrale</div>
+        <div class="service-item"><span class="service-icon">✨</span>Impasto Khorasan</div>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-block-label">Come raggiungerci</div>
+      <div class="transport-list">
+        <div class="transport-item">
+          <div class="transport-icon">🚶</div>
+          <div class="transport-text">
+            <strong>A piedi dal centro</strong>
+            5 minuti da Piazza Rosmini, 2 minuti dal Teatro Zandonai.
+          </div>
+        </div>
+        <div class="transport-item">
+          <div class="transport-icon">🚗</div>
+          <div class="transport-text">
+            <strong>In auto</strong>
+            Ampio parcheggio disponibile in Corso Bettini, 48 e nelle strade adiacenti.
+          </div>
+        </div>
+        <div class="transport-item">
+          <div class="transport-icon">🚂</div>
+          <div class="transport-text">
+            <strong>In treno</strong>
+            Dalla stazione di Rovereto: 12 minuti a piedi verso il centro storico.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cta-row">
+      <button class="btn-primary" id="openBooking">Prenota un tavolo</button>
+      <a href="https://maps.google.com/?q=El+Raminel+Rovereto+Corso+Bettini" target="_blank" class="btn-outline">Indicazioni stradali</a>
+      <a href="pizzeria-marco-menu.html" class="btn-outline">Vedi il menu</a>
+    </div>
+
+  </div>
+</div>
+<!-- NEIGHBOURHOOD -->
+<section class="neighbourhood">
+  <span class="eyebrow reveal">Nei dintorni</span>
+  <h2 class="reveal">Il quartiere <em>intorno a noi</em></h2>
+  <p class="neighbourhood-sub reveal">Siamo nel cuore pulsante di Rovereto — a due passi dalla cultura, dalla storia e dai principali punti d'incontro della città.</p>
+  <div class="poi-grid reveal">
+    <div class="poi-item">
+      <span class="poi-emoji">🎭</span>
+      <div class="poi-name">MART</div>
+      <div class="poi-desc">Museo di Arte Moderna e Contemporanea — a 2 minuti a piedi dall'El Raminel.</div>
+      <div class="poi-dist">~2 min a piedi</div>
+    </div>
+    <div class="poi-item">
+      <span class="poi-emoji">🏰</span>
+      <div class="poi-name">Teatro Zandonai</div>
+      <div class="poi-desc">Il teatro storico di Rovereto, uno dei più belli del Trentino.</div>
+      <div class="poi-dist">~5 min a piedi</div>
+    </div>
+    <div class="poi-item">
+      <span class="poi-emoji">🎨</span>
+      <div class="poi-name">Castello di Rovereto</div>
+      <div class="poi-desc">Fortezza medievale che domina la città, con una splendida vista sul centro.</div>
+      <div class="poi-dist">~8 min a piedi</div>
+    </div>
+    <div class="poi-item">
+      <span class="poi-emoji">⛪</span>
+      <div class="poi-name">Piazza Rosmini</div>
+      <div class="poi-desc">Il salotto della città, fulcro della vita sociale roveretana.</div>
+      <div class="poi-dist">~3 min a piedi</div>
+    </div>
+  </div>
+</section>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">El <em>Raminel</em></div>
+  <div class="footer-copy">© 2025 El Raminel · Corso Bettini, Rovereto (TN) · Tutti i diritti riservati</div>
+</footer>
+<!-- BOOKING MODAL -->
+<div class="modal-overlay" id="bookingModal" role="dialog" aria-modal="true" aria-label="Prenota un tavolo">
+  <div class="modal-box">
+    <button class="modal-close" id="closeBooking" aria-label="Chiudi">✕</button>
+    <span class="modal-eyebrow">El Raminel · Rovereto</span>
+    <h2 class="modal-title">Prenota<em> il tuo tavolo</em></h2>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="b-nome">Nome e cognome *</label>
+        <input type="text" id="b-nome" placeholder="Mario Rossi" required>
+      </div>
+      <div class="form-group">
+        <label for="b-tel">Telefono *</label>
+        <input type="tel" id="b-tel" placeholder="333 123 4567" required>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="b-data">Data *</label>
+        <input type="date" id="b-data" required>
+      </div>
+      <div class="form-group">
+        <label for="b-ora">Orario *</label>
+        <select id="b-ora" required>
+          <option value="">— scegli —</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="b-persone">Numero di persone *</label>
+      <select id="b-persone" required>
+        <option value="">— scegli —</option>
+        <option>1</option><option>2</option><option>3</option>
+        <option>4</option><option>5</option><option>6</option>
+        <option>7</option><option>8</option><option>9</option>
+        <option>10</option><option>11</option><option>12</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="b-note">Note (opzionale)</label>
+      <textarea id="b-note" placeholder="Allergie, occasioni speciali, richieste particolari…"></textarea>
+    </div>
+
+    <div class="form-error" id="bookingError"></div>
+    <button class="form-submit" id="bookingSubmit">Invia prenotazione</button>
+  </div>
+</div>
+<!-- Toast conferma -->
+<div class="toast-booking" id="bookingToast">
+  ✓ Prenotazione ricevuta! Ti confermiamo al più presto.
+</div>
+<script type="module">
+ const SUPABASE_URL      = 'https://urdfwujrekisuylowqjc.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVyZGZ3dWpyZWtpc3V5bG93cWpjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMzQ0ODAsImV4cCI6MjA5MTkxMDQ4MH0.4jg_co4O8bkFMtx6y4jt7lPfQjFG6sgUMgZpDRdM3Xw';                  // ← sostituisci
+
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+  const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const ALL_SLOTS = ['11:30','12:00','12:30','13:00','13:30',
+                     '18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30'];
+  function populateSlots(dateVal) {
+    const sel = document.getElementById('b-ora');
+    sel.innerHTML = '<option value="">— scegli —</option>';
+    const today = new Date().toISOString().split('T')[0];
+    const now   = new Date();
+    ALL_SLOTS.forEach(slot => {
+      if (dateVal === today) {
+        const [h,m] = slot.split(':').map(Number);
+        const slotDate = new Date(); slotDate.setHours(h,m,0,0);
+        if (slotDate <= now) return; // slot già passato
+      }
+      const opt = document.createElement('option');
+      opt.value = opt.textContent = slot;
+      sel.appendChild(opt);
+    });
+  }
+ 
+  function setMinDate() {
+    const inp = document.getElementById('b-data');
+    const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+    inp.min = tomorrow.toISOString().split('T')[0];
+  }
+
+  document.getElementById('b-data').addEventListener('change', e => {
+    populateSlots(e.target.value);
+  });
+  
+  const overlay = document.getElementById('bookingModal');
+
+  document.getElementById('openBooking').addEventListener('click', () => {
+    setMinDate();
+    populateSlots('');
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('closeBooking').addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+ 
+ document.getElementById('bookingSubmit').addEventListener('click', async () => {
+    const nome    = document.getElementById('b-nome').value.trim();
+    const tel     = document.getElementById('b-tel').value.trim();
+    const data    = document.getElementById('b-data').value;
+    const ora     = document.getElementById('b-ora').value;
+    const persone = document.getElementById('b-persone').value;
+    const note    = document.getElementById('b-note').value.trim();
+    const errEl   = document.getElementById('bookingError');
+    const btn     = document.getElementById('bookingSubmit');
+
+    errEl.classList.remove('show');
+
+    if (!nome || !tel || !data || !ora || !persone) {
+      errEl.textContent = 'Compila tutti i campi obbligatori.';
+      errEl.classList.add('show');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Invio in corso…';
+
+   if (SUPABASE_URL.includes('YOUR_PROJECT')) {
+      errEl.textContent = 'Supabase non configurato. Sostituisci SUPABASE_URL e SUPABASE_ANON_KEY nello script.';
+      errEl.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = 'Invia prenotazione';
+      return;
+    }
+
+    const { error } = await sb.from('prenotazioni').insert({
+      nome, telefono: tel, data, ora,
+      persone: parseInt(persone),
+      note: note || null,
+      stato: 'in_attesa'
+    });
+
+    btn.disabled = false;
+    btn.textContent = 'Invia prenotazione';
+
+    if (error) {
+      errEl.textContent = 'Errore durante l\'invio. Riprova o chiamaci direttamente.';
+      errEl.classList.add('show');
+      console.error('Supabase error:', error);
+      return;
+    }
+
+    closeModal();
+    document.getElementById('b-nome').value = '';
+    document.getElementById('b-tel').value  = '';
+    document.getElementById('b-data').value = '';
+    document.getElementById('b-persone').value = '';
+    document.getElementById('b-note').value = '';
+
+    const toast = document.getElementById('bookingToast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4500);
+  });
+</script>
+
+<script>
+  const days = document.querySelectorAll('.hours-row');
+  const todayIdx = new Date().getDay();
+  const map = {1:0, 2:1, 3:2, 4:3, 5:4, 6:5, 0:6};
+  days.forEach(row => row.classList.remove('today'));
+  if (days[map[todayIdx]]) {
+    const targetRow = days[map[todayIdx]];
+    targetRow.classList.add('today');
+    if (!targetRow.querySelector('.today-badge')) {
+      const b = document.createElement('span');
+      b.className = 'today-badge'; b.textContent = 'oggi';
+      targetRow.querySelector('.day').appendChild(b);
+    }
+  }
+
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold:.1 });
+  reveals.forEach(el => obs.observe(el));
+
+  const navEl = document.getElementById('nav');
+  window.addEventListener('scroll', () => navEl.classList.toggle('scrolled', window.scrollY > 60));
+  document.getElementById('navHamburger').addEventListener('click', function() {
+    const open = navEl.classList.toggle('nav-open');
+    this.setAttribute('aria-expanded', open);
+  });
+  document.addEventListener('click', e => {
+    if (!navEl.contains(e.target)) navEl.classList.remove('nav-open');
+  });
+</script>
+</body>
+</html>
+</body>
+</html>
