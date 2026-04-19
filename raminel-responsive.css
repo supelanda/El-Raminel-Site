@@ -32,7 +32,6 @@
   }
   nav.nav-open .nav-mobile-menu { display:flex !important; }
 
-  .nav-mobile-menu li { list-style:none; }
   .nav-mobile-menu a {
     display:block; padding:.85rem 1.8rem;
     font-family:'Raleway', sans-serif; font-size:.85rem; font-weight:600;
@@ -51,6 +50,7 @@
     letter-spacing:.16em; text-transform:uppercase;
     background:var(--teal); color:var(--ink);
     border:none; padding:.6rem 1.5rem; text-decoration:none;
+    border-bottom:none !important;
   }
 
   /* ── Container ── */
