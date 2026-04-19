@@ -195,24 +195,39 @@
 .stat-desc { font-size:.78rem; color:var(--ink); opacity:.5; line-height:1.5; }
 
 .reviews-section { padding:9rem 0; border-top:1px solid var(--border); }
-.reviews-head { margin-bottom:4rem; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:1rem; }
-.reviews-masonry { columns:3; gap:1.5rem; column-fill:balance; }
-.review-card {
-  break-inside:avoid; background:var(--panel); border:1px solid var(--border);
-  padding:1.7rem; margin-bottom:1.5rem; position:relative; overflow:hidden;
-  transition:border-color .2s;
+.reviews-head { margin-bottom:3.5rem; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:1rem; }
+/* ── Carousel ── */
+.rev-wrap {
+  overflow:hidden; position:relative;
+  /* fade edges */
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
 }
-.review-card:hover { border-color:rgba(104,174,186,.35); }
-.review-card::before {
+.rev-track {
+  display:flex; gap:1.4rem; width:max-content;
+  animation: rev-slide 52s linear infinite;
+}
+.rev-track:hover { animation-play-state: paused; }
+@keyframes rev-slide {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.rev-card {
+  flex-shrink:0; width:310px;
+  background:var(--panel); border:1px solid var(--border);
+  padding:1.8rem 1.8rem 1.6rem; position:relative; overflow:hidden;
+  transition:border-color .25s, transform .25s;
+}
+.rev-card:hover { border-color:rgba(104,174,186,.4); transform:translateY(-3px); }
+.rev-card::before {
   content:'\201C'; font-family:'DM Serif Display',serif;
-  font-size:4rem; line-height:.6; font-style:italic;
+  font-size:4.5rem; line-height:.6; font-style:italic;
   color:var(--teal); opacity:.1;
-  position:absolute; top:.9rem; left:1.1rem;
+  position:absolute; top:.6rem; left:1rem; pointer-events:none;
 }
-.review-stars { color:var(--amber); font-size:.82rem; letter-spacing:.1em; margin-bottom:.65rem; }
-.review-text { font-size:.88rem; font-style:italic; color:var(--warm); line-height:1.65; margin-bottom:1.1rem; }
-.review-author { font-family:'Raleway',sans-serif; font-size:.68rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
-.reviews-cta { text-align:center; margin-top:3rem; }
+.rev-stars { color:var(--amber); font-size:.8rem; letter-spacing:.1em; margin-bottom:.7rem; }
+.rev-text { font-size:.87rem; font-style:italic; color:var(--warm); line-height:1.65; margin-bottom:1.1rem; }
+.rev-author { font-family:'Raleway',sans-serif; font-size:.67rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); }
 
 
 .info-block { margin-bottom:2.2rem; padding-bottom:2.2rem; border-bottom:1px solid var(--border-s); }
@@ -231,25 +246,24 @@
 <nav id="nav">
   <ul class="nav-left">
     <li class="nav-links-item"><a href="#about">Storia</a></li>
-    <li class="nav-links-item"><a href="raminel-menu.html">Menu</a></li>
   </ul>
   <a href="index.html" class="nav-logo">El <em>Raminel</em></a>
   <ul class="nav-right">
-    <li class="nav-links-item"><a href="raminel-recensioni.html">Recensioni</a></li>
     <li class="nav-links-item"><a href="raminel-dove-siamo.html">Dove siamo</a></li>
-    <li><a href="tel:+390464" class="nav-cta">Prenota</a></li>
+    <li><a href="raminel-dove-siamo.html" class="nav-cta">Prenota</a></li>
   </ul>
   <button class="nav-hamburger" id="navHamburger" aria-label="Apri menu" aria-expanded="false">
     <span></span><span></span><span></span>
   </button>
+  <!-- Mobile dropdown — deve stare DENTRO <nav> perché nav.nav-open lo controlla -->
+  <ul class="nav-mobile-menu" id="mobileMenu">
+    <li><a href="#about">Storia</a></li>
+    <li><a href="raminel-menu.html">Menu</a></li>
+    <li><a href="raminel-recensioni.html">Recensioni</a></li>
+    <li><a href="raminel-dove-siamo.html">Dove siamo</a></li>
+    <a href="raminel-dove-siamo.html" class="nav-mobile-cta">Prenota un tavolo</a>
+  </ul>
 </nav>
-<ul class="nav-mobile-menu" id="mobileMenu">
-  <li><a href="#about">Storia</a></li>
-  <li><a href="raminel-menu.html">Menu</a></li>
-  <li><a href="raminel-recensioni.html">Recensioni</a></li>
-  <li><a href="raminel-dove-siamo.html">Dove siamo</a></li>
-  <a href="tel:+390464" class="nav-mobile-cta">Prenota un tavolo</a>
-</ul>
 
 <section class="hero">
   <div class="hero-left">
@@ -398,16 +412,31 @@
       </div>
       <a href="raminel-recensioni.html" class="btn-outline">Tutte le 601 recensioni →</a>
     </div>
-    <div class="reviews-masonry reveal">
-      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Cibo eccellente, bene anche il servizio per bimbi di varie età. Personale rapido e gentile. Ubicato in una delle vie più belle di Rovereto, Corso Bettini, la via della cultura."</p><span class="review-author">Andrea Tettamanti · Local Guide</span></div>
-      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Un posto trovato quasi per caso, cercavamo una pizzeria in centro a Rovereto. È stata una bella scoperta. L'ambiente è bellissimo, moderno, curato, giovanile. Personale gentile e cordiale."</p><span class="review-author">Veronica Bensi · Local Guide</span></div>
-      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"The Atmosphere was great vibe, and the pizza was delicious. I had the best Tiramisu ever. I wish to steal the recipe!! I went there a second time only for the Tiramisu. Love, love."</p><span class="review-author">Yoyo Is Here · Local Guide</span></div>
-      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Mangiato benissimo! Non scorderò il purè di sedano rapa in abbinamento alla guancia di maiale brasata. Sono tornata e ho scelto le tagliatelle al ragù di cinghiale: ottime! E i dessert erano tutti eccellenti."</p><span class="review-author">Corona Perer · Local Guide · 1195 rec.</span></div>
-      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Outstanding pizza! We had the beef carpaccio as appetizer and the four cheese pizza. Both were outstanding. The best pizza crust we have had in Italy. The host recommended wine from the region."</p><span class="review-author">Victor Gurel · Local Guide</span></div>
-      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Ottima pizza, soprattutto quella con impasto integrale — si sposava benissimo con pancetta e patate. La crostata ai mirtilli fatta in casa era davvero buona. Devo tornarci qualche volta."</p><span class="review-author">Stefano Linguanotto · Local Guide</span></div>
+  </div>
+  <!-- Carousel full-bleed (fuori dal container per sfruttare tutta la larghezza) -->
+  <div class="rev-wrap">
+    <div class="rev-track">
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Cibo eccellente, bene anche il servizio per bimbi di varie età. Personale rapido e gentile. In una delle vie più belle di Rovereto."</p><span class="rev-author">Andrea Tettamanti · Local Guide</span></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Un posto trovato quasi per caso. L'ambiente è bellissimo, moderno, curato, giovanile. Personale gentile e cordiale."</p><span class="rev-author">Veronica Bensi · Local Guide</span></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"The pizza was delicious. I had the best Tiramisu ever — I wish to steal the recipe!! I went there a second time only for the Tiramisu. Love, love."</p><span class="rev-author">Yoyo Is Here · Local Guide</span></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Non scorderò il purè di sedano rapa con la guancia brasata. Le tagliatelle al ragù di cinghiale: ottime! Dessert eccellenti."</p><span class="rev-author">Corona Perer · Local Guide · 1195 rec.</span></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Outstanding pizza! The best pizza crust we have had in Italy. The host recommended wine from the region — a perfect evening."</p><span class="rev-author">Victor Gurel · Local Guide</span></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Ottima pizza integrale con pancetta e patate. La crostata ai mirtilli fatta in casa era davvero buona. Devo tornarci qualche volta."</p><span class="rev-author">Stefano Linguanotto · Local Guide</span></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Eccellente sotto tutti i punti di vista — cortesia, servizio veloce, varietà del menù. Non abbiamo mai aspettato neanche con il locale pieno."</p><span class="rev-author">Emanuela Buonpane · Local Guide</span></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Pizza fantastica, personale molto cordiale, locale impeccabile. Un punto di riferimento ogni volta che siamo a Rovereto."</p><span class="rev-author">Caterina Peschedasch · Local Guide</span></div>
+      <!-- duplicate set for loop continuo -->
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Cibo eccellente, bene anche il servizio per bimbi di varie età. Personale rapido e gentile. In una delle vie più belle di Rovereto."</p><span class="rev-author">Andrea Tettamanti · Local Guide</span></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Un posto trovato quasi per caso. L'ambiente è bellissimo, moderno, curato, giovanile. Personale gentile e cordiale."</p><span class="rev-author">Veronica Bensi · Local Guide</span></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"The pizza was delicious. I had the best Tiramisu ever — I wish to steal the recipe!! I went there a second time only for the Tiramisu. Love, love."</p><span class="rev-author">Yoyo Is Here · Local Guide</span></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Non scorderò il purè di sedano rapa con la guancia brasata. Le tagliatelle al ragù di cinghiale: ottime! Dessert eccellenti."</p><span class="rev-author">Corona Perer · Local Guide · 1195 rec.</span></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Outstanding pizza! The best pizza crust we have had in Italy. The host recommended wine from the region — a perfect evening."</p><span class="rev-author">Victor Gurel · Local Guide</span></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Ottima pizza integrale con pancetta e patate. La crostata ai mirtilli fatta in casa era davvero buona. Devo tornarci qualche volta."</p><span class="rev-author">Stefano Linguanotto · Local Guide</span></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Eccellente sotto tutti i punti di vista — cortesia, servizio veloce, varietà del menù. Non abbiamo mai aspettato neanche con il locale pieno."</p><span class="rev-author">Emanuela Buonpane · Local Guide</span></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Pizza fantastica, personale molto cordiale, locale impeccabile. Un punto di riferimento ogni volta che siamo a Rovereto."</p><span class="rev-author">Caterina Peschedasch · Local Guide</span></div>
     </div>
   </div>
 </section>
+
 
 <footer>
   <div class="footer-inner">
