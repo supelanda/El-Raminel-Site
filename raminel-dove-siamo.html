@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dove Siamo — El Raminel, Rovereto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Raleway:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="raminel-base.css">
+<link rel="stylesheet" href="raminel-responsive.css">
+<style>
+.page-hero { padding:10rem 3rem 4rem; position:relative; overflow:hidden; }
+.page-hero-inner { max-width:560px; }
+.hero-compass {
+  position:absolute; right:5rem; top:50%; transform:translateY(-50%);
+  width:200px; height:200px;
+  opacity:0; animation:fadeIn 1.2s .6s forwards;
+}
+
+.dove-split {
+  position:relative; z-index:1;
+  display:grid; grid-template-columns:1fr 1fr;
+  min-height:80vh; border-bottom:1px solid var(--border);
+}
+.dove-map {
+  position:relative; overflow:hidden;
+  background:var(--deep); border-right:1px solid var(--border);
+}
+.dove-map::before {
+  content:''; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background-image:radial-gradient(circle, rgba(104,174,186,.12) 1px, transparent 1px);
+  background-size:26px 26px; background-position:13px 13px;
+}
+.dove-map iframe { position:absolute; inset:0; width:100%; height:100%; border:0; display:block; filter:saturate(.65) contrast(1.05) brightness(.82) hue-rotate(160deg); }
+.map-open-btn {
+  position:absolute; bottom:3rem; left:50%; transform:translateX(-50%);
+  font-family:'Raleway',sans-serif; font-size:.72rem; font-weight:700;
+  letter-spacing:.18em; text-transform:uppercase;
+  color:var(--teal); text-decoration:none;
+  background:rgba(8,18,21,.88); border:1px solid var(--border);
+  padding:.6rem 1.6rem; backdrop-filter:blur(8px);
+  white-space:nowrap; transition:border-color .2s; z-index:2;
+}
+.map-open-btn:hover { border-color:var(--teal); }
+.map-watermark {
+  position:absolute; bottom:1.2rem; left:50%; transform:translateX(-50%);
+  font-family:'Raleway',sans-serif; font-size:.6rem; font-weight:700;
+  letter-spacing:.24em; text-transform:uppercase;
+  color:var(--muted); opacity:.4; display:flex; align-items:center; gap:.5rem; z-index:2;
+}
+.map-watermark::before, .map-watermark::after { content:''; width:24px; height:1px; background:currentColor; }
+
+.dove-info { padding:4.5rem 4rem; display:flex; flex-direction:column; gap:3rem; overflow-y:auto; }
+.info-block { }
+.info-block-label {
+  font-family:'Raleway',sans-serif; font-size:.68rem; font-weight:700;
+  letter-spacing:.3em; text-transform:uppercase;
+  color:var(--teal); margin-bottom:.9rem;
+  display:flex; align-items:center; gap:.8rem;
+}
+.info-block-label::after { content:''; flex:1; height:1px; background:var(--border); }
+.info-address { font-family:'DM Serif Display',serif; font-size:1.4rem; line-height:1.4; color:var(--cream); }
+.info-address-sub { font-size:.88rem; color:var(--muted); margin-top:.5rem; font-style:italic; }
+
+.hours-table { width:100%; }
+.hours-row { display:flex; justify-content:space-between; align-items:center; padding:.5rem 0; border-bottom:1px solid rgba(104,174,186,.06); font-size:.93rem; }
+.hours-row:last-child { border-bottom:none; }
+.hours-row .day { color:var(--muted); font-weight:500; }
+.hours-row .time { color:var(--cream); }
+.hours-row.today .day, .hours-row.today .time { color:var(--amber); }
+.hours-row.closed .day, .hours-row.closed .time { color:var(--muted); opacity:.45; }
+.today-badge { font-family:'Raleway',sans-serif; font-size:.58rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; background:rgba(237,187,100,.12); color:var(--amber); padding:.18rem .5rem; border:1px solid rgba(237,187,100,.25); margin-left:.5rem; }
+
+.services-grid { display:grid; grid-template-columns:1fr 1fr; gap:.6rem; }
+.service-item { display:flex; align-items:center; gap:.65rem; font-size:.85rem; color:var(--muted); padding:.55rem .85rem; border:1px solid var(--border); transition:border-color .2s, color .2s; }
+.service-item:hover { border-color:rgba(104,174,186,.35); color:var(--cream); }
+.service-icon { font-size:1rem; flex-shrink:0; }
+
+.transport-list { display:flex; flex-direction:column; gap:.8rem; }
+.transport-item { display:flex; gap:1rem; align-items:flex-start; }
+.transport-icon { width:2rem; height:2rem; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:.95rem; flex-shrink:0; color:var(--teal); }
+.transport-text { font-size:.88rem; color:var(--muted); line-height:1.6; }
+.transport-text strong { display:block; color:var(--cream); font-size:.92rem; margin-bottom:.1rem; font-weight:600; }
+
+.cta-row { display:flex; gap:.9rem; flex-wrap:wrap; padding-top:.5rem; }
+
+/* Neighbourhood */
+.neighbourhood { position:relative; z-index:1; padding:6rem 3rem; border-bottom:1px solid var(--border); }
+.neighbourhood-header { margin-bottom:3rem; }
+.neighbourhood-header h2 { font-family:'DM Serif Display',serif; font-size:clamp(1.8rem,3vw,2.6rem); font-weight:400; color:var(--cream); margin-bottom:.6rem; }
+.neighbourhood-header h2 em { font-style:italic; color:var(--amber); }
+.neighbourhood-header p { font-size:.92rem; color:var(--muted); max-width:500px; }
+.poi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border); }
+.poi-item { background:var(--panel); padding:2rem 1.6rem; transition:background .25s; }
+.poi-item:hover { background:var(--panel-lt); }
+.poi-emoji { font-size:1.7rem; margin-bottom:.65rem; display:block; }
+.poi-name { font-family:'DM Serif Display',serif; font-size:.98rem; font-weight:400; color:var(--cream); margin-bottom:.3rem; }
+.poi-desc { font-size:.82rem; color:var(--muted); line-height:1.45; }
+.poi-dist { margin-top:.65rem; font-family:'Raleway',sans-serif; font-size:.65rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--teal); opacity:.75; }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <ul class="nav-left">
+    <li class="nav-links-item"><a href="index.html#about">Storia</a></li>
+    <li class="nav-links-item"><a href="raminel-menu.html">Menu</a></li>
+  </ul>
+  <a href="index.html" class="nav-logo">El <em>Raminel</em></a>
+  <ul class="nav-right">
+    <li class="nav-links-item"><a href="raminel-recensioni.html">Recensioni</a></li>
+    <li class="nav-links-item"><a href="#" class="active">Dove siamo</a></li>
+    <li><a href="tel:+390464" class="nav-cta">Prenota</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Apri menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<ul class="nav-mobile-menu">
+  <li><a href="index.html#about">Storia</a></li>
+  <li><a href="raminel-menu.html">Menu</a></li>
+  <li><a href="raminel-recensioni.html">Recensioni</a></li>
+  <li><a href="#" class="active">Dove siamo</a></li>
+  <a href="tel:+390464" class="nav-mobile-cta">Prenota</a>
+</ul>
+
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <span class="eyebrow">Rovereto · Trentino</span>
+    <h1 class="page-title">Trovaci<em>al centro.</em></h1>
+    <p class="page-sub">In Corso Bettini, a due passi dal MART e dal cuore di Rovereto — facile da raggiungere, impossibile dimenticare.</p>
+  </div>
+  <svg class="hero-compass" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(104,174,186,.3)" stroke-width="1"/>
+    <circle cx="100" cy="100" r="68" fill="none" stroke="rgba(104,174,186,.15)" stroke-width=".5" stroke-dasharray="4,6"/>
+    <circle cx="100" cy="100" r="48" fill="none" stroke="rgba(104,174,186,.2)" stroke-width="1"/>
+    <line x1="100" y1="10" x2="100" y2="190" stroke="rgba(104,174,186,.15)" stroke-width=".5"/>
+    <line x1="10" y1="100" x2="190" y2="100" stroke="rgba(104,174,186,.15)" stroke-width=".5"/>
+    <polygon points="100,10 94,45 100,40 106,45" fill="var(--teal)"/>
+    <polygon points="100,190 94,155 100,160 106,155" fill="var(--teal)" opacity=".3"/>
+    <text x="100" y="7" text-anchor="middle" fill="var(--teal)" font-size="10" font-family="'Raleway',sans-serif" font-weight="700">N</text>
+    <circle cx="100" cy="100" r="5" fill="var(--amber)"/>
+    <circle cx="100" cy="100" r="2.5" fill="var(--ink)"/>
+  </svg>
+</section>
+
+<div class="dove-split">
+  <div class="dove-map">
+    <iframe
+      src="https://maps.google.com/maps?q=Ristorante+Pizzeria+El+Raminel+Rovereto+Corso+Bettini&output=embed&z=16"
+      loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
+      title="El Raminel — Corso Bettini, Rovereto">
+    </iframe>
+    <a href="https://maps.google.com/?q=Ristorante+El+Raminel+Rovereto+Corso+Bettini" target="_blank" class="map-open-btn">
+      Apri in Google Maps →
+    </a>
+    <div class="map-watermark">Rovereto · Trentino-Alto Adige</div>
+  </div>
+
+  <div class="dove-info reveal">
+    <div class="info-block">
+      <div class="info-block-label">Indirizzo</div>
+      <div class="info-address">Corso Bettini<br>38068 Rovereto (TN)</div>
+      <div class="info-address-sub">Vicino al MART · Centro storico · Via della cultura</div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-block-label">Orari di apertura</div>
+      <table class="hours-table">
+        <tr class="hours-row"><td class="day">Lunedì</td><td class="time">12:00–14:30 · 19:00–22:00</td></tr>
+        <tr class="hours-row"><td class="day">Martedì</td><td class="time">12:00–14:30 · 19:00–22:00</td></tr>
+        <tr class="hours-row"><td class="day">Mercoledì</td><td class="time">12:00–14:30 · 19:00–22:00</td></tr>
+        <tr class="hours-row"><td class="day">Giovedì</td><td class="time">12:00–14:30 · 19:00–22:00</td></tr>
+        <tr class="hours-row"><td class="day">Venerdì</td><td class="time">12:00–14:30 · 19:00–22:30</td></tr>
+        <tr class="hours-row"><td class="day">Sabato</td><td class="time">12:00–14:30 · 19:00–22:30</td></tr>
+        <tr class="hours-row"><td class="day">Domenica</td><td class="time">12:00–14:30 · 19:00–22:00</td></tr>
+      </table>
+    </div>
+
+    <div class="info-block">
+      <div class="info-block-label">Servizi disponibili</div>
+      <div class="services-grid">
+        <div class="service-item"><span class="service-icon">🍽️</span>Ristorante</div>
+        <div class="service-item"><span class="service-icon">🍕</span>Pizzeria</div>
+        <div class="service-item"><span class="service-icon">📦</span>Asporto</div>
+        <div class="service-item"><span class="service-icon">☀️</span>Tavoli all'aperto</div>
+        <div class="service-item"><span class="service-icon">🐾</span>Animali benvenuti</div>
+        <div class="service-item"><span class="service-icon">🍷</span>Carta dei vini</div>
+        <div class="service-item"><span class="service-icon">🌾</span>Impasto integrale</div>
+        <div class="service-item"><span class="service-icon">🌱</span>Opzioni vegetariane</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-block-label">Come raggiungerci</div>
+      <div class="transport-list">
+        <div class="transport-item">
+          <div class="transport-icon">🚶</div>
+          <div class="transport-text">
+            <strong>A piedi dal centro</strong>
+            2 minuti dal MART, 5 minuti da Piazza Rosmini. Nel cuore di Corso Bettini.
+          </div>
+        </div>
+        <div class="transport-item">
+          <div class="transport-icon">🚗</div>
+          <div class="transport-text">
+            <strong>In auto</strong>
+            Parcheggio disponibile in Corso Bettini e nelle strade adiacenti. Centro raggiungibile facilmente.
+          </div>
+        </div>
+        <div class="transport-item">
+          <div class="transport-icon">🚂</div>
+          <div class="transport-text">
+            <strong>In treno</strong>
+            Dalla stazione di Rovereto: 15 minuti a piedi verso il centro storico lungo il Leno.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <a href="tel:+390464" class="btn-primary">Chiama per prenotare</a>
+      <a href="https://maps.google.com/?q=El+Raminel+Rovereto" target="_blank" class="btn-outline">Indicazioni stradali</a>
+      <a href="raminel-menu.html" class="btn-teal">Vedi il menu</a>
+    </div>
+  </div>
+</div>
+
+<section class="neighbourhood">
+  <div class="neighbourhood-header reveal">
+    <span class="eyebrow" style="opacity:1;animation:none;">Nei dintorni</span>
+    <h2>Il quartiere <em>intorno a noi</em></h2>
+    <p>Siamo in Corso Bettini — la via della cultura di Rovereto. A pochi passi da arte, storia e vita cittadina.</p>
+  </div>
+  <div class="poi-grid reveal">
+    <div class="poi-item">
+      <span class="poi-emoji">🎨</span>
+      <div class="poi-name">MART</div>
+      <div class="poi-desc">Museo di Arte Moderna e Contemporanea di Trento e Rovereto. Una delle più grandi collezioni d'arte moderna d'Italia.</div>
+      <div class="poi-dist">~2 min a piedi</div>
+    </div>
+    <div class="poi-item">
+      <span class="poi-emoji">🎭</span>
+      <div class="poi-name">Teatro Zandonai</div>
+      <div class="poi-desc">Il teatro storico di Rovereto, uno dei più belli del Trentino. Stagioni di prosa, opera e musica.</div>
+      <div class="poi-dist">~5 min a piedi</div>
+    </div>
+    <div class="poi-item">
+      <span class="poi-emoji">🏰</span>
+      <div class="poi-name">Castello di Rovereto</div>
+      <div class="poi-desc">Fortezza medievale che domina la città, oggi sede del MART. Vista panoramica sulla Vallagarina.</div>
+      <div class="poi-dist">~8 min a piedi</div>
+    </div>
+    <div class="poi-item">
+      <span class="poi-emoji">⛪</span>
+      <div class="poi-name">Piazza Rosmini</div>
+      <div class="poi-desc">Il salotto della città, fulcro della vita sociale roveretana. Mercati, eventi e vita quotidiana.</div>
+      <div class="poi-dist">~5 min a piedi</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand"><div class="footer-logo">El <em>Raminel</em></div><div class="footer-tagline">Ristorante Pizzeria nel cuore di Rovereto<br>Corso Bettini · Trentino</div></div>
+    <div><span class="footer-col-title">Pagine</span><ul class="footer-links"><li><a href="index.html#about">Storia</a></li><li><a href="raminel-menu.html">Menu</a></li><li><a href="raminel-recensioni.html">Recensioni</a></li><li><a href="#">Dove siamo</a></li></ul></div>
+    <div><span class="footer-col-title">Contatti</span><div class="footer-address">Corso Bettini, 38068 Rovereto (TN)<br><br>Lun–Ven: 12:00–14:30 · 19:00–22:00<br>Sab: 12:00–14:30 · 19:00–22:30<br>Dom: 12:00–14:30 · 19:00–22:00</div></div>
+  </div>
+  <div class="footer-bottom"><div class="footer-copy">© 2025 El Raminel · Rovereto (TN)</div><div class="footer-copy">4,0 ★ · 601 recensioni Google</div></div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+  document.getElementById('navHamburger').addEventListener('click', function() { const o = nav.classList.toggle('nav-open'); this.setAttribute('aria-expanded', o); });
+  document.addEventListener('click', e => { if(!nav.contains(e.target)) nav.classList.remove('nav-open'); });
+
+  // Today highlight
+  const days = document.querySelectorAll('.hours-row');
+  const todayMap = {1:0,2:1,3:2,4:3,5:4,6:5,0:6};
+  const todayIdx = todayMap[new Date().getDay()];
+  if(days[todayIdx]) {
+    days[todayIdx].classList.add('today');
+    const dayCell = days[todayIdx].querySelector('.day');
+    if(dayCell && !dayCell.querySelector('.today-badge')) {
+      const b = document.createElement('span'); b.className='today-badge'; b.textContent='oggi';
+      dayCell.appendChild(b);
+    }
+  }
+
+  const revObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); } });
+  }, {threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+/*
+ * raminel-responsive.css
+ * Mobile/tablet — desktop layout NEVER touched.
+ * 900px tablet | 600px mobile
+ */
+
+/* ══════════════════════════════════════
+   TABLET ≤ 900px
+══════════════════════════════════════ */
+@media (max-width: 900px) {
+
+  /* ── Nav: switch to hamburger ── */
+  nav {
+    grid-template-columns: 1fr auto auto !important;
+    padding: .9rem 1.5rem !important;
+  }
+  .nav-left, .nav-right { display:none !important; }
+  .nav-logo { text-align:left; }
+  .nav-hamburger { display:flex; }
+  .nav-cta { display:none; }
+
+  /* Mobile nav dropdown */
+  .nav-left.mobile-open,
+  .nav-right.mobile-open { display:none !important; }
+
+  .nav-mobile-menu {
+    display:none;
+    position:absolute; top:100%; left:0; right:0;
+    background:rgba(8,18,21,.98); backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);
+    padding:.5rem 0 1.2rem; flex-direction:column;
+  }
+  nav.nav-open .nav-mobile-menu { display:flex !important; }
+
+  .nav-mobile-menu li { list-style:none; }
+  .nav-mobile-menu a {
+    display:block; padding:.85rem 1.8rem;
+    font-family:'Raleway', sans-serif; font-size:.85rem; font-weight:600;
+    letter-spacing:.14em; text-transform:uppercase;
+    color:var(--muted); text-decoration:none;
+    border-bottom:1px solid rgba(104,174,186,.07);
+    transition:color .2s, background .2s;
+  }
+  .nav-mobile-menu a:hover, .nav-mobile-menu a.active {
+    color:var(--teal-lt); background:rgba(104,174,186,.05);
+  }
+  .nav-mobile-cta {
+    margin: .8rem 1.8rem 0;
+    display:inline-block; align-self:flex-start;
+    font-family:'Raleway', sans-serif; font-size:.75rem; font-weight:700;
+    letter-spacing:.16em; text-transform:uppercase;
+    background:var(--teal); color:var(--ink);
+    border:none; padding:.6rem 1.5rem; text-decoration:none;
+  }
+
+  /* ── Container ── */
+  .container { padding: 0 1.5rem; }
+
+  /* ── Page hero ── */
+  .page-hero { padding: 9rem 1.5rem 3.5rem !important; }
+
+  /* ── Hero (homepage) ── */
+  .hero-split { grid-template-columns: 1fr !important; }
+  .hero-deco { display:none; }
+  .hero { padding: 6rem 1.5rem 5rem; }
+  .hero-title { font-size: clamp(3.2rem,11vw,5.5rem) !important; }
+  .hero-actions { flex-direction:column; align-items:flex-start; gap:.8rem; }
+
+  /* ── About ── */
+  .about { padding: 6rem 0; }
+  .about-grid { grid-template-columns: 1fr !important; gap:3rem !important; }
+  .about-visual { max-width:500px; }
+
+  /* ── Menu preview (homepage) ── */
+  .menu-preview { padding: 6rem 0; }
+  .menu-tabs-side { display:none; }
+  .menu-tabs-top { display:flex !important; }
+  .menu-preview-grid { grid-template-columns: 1fr 1fr !important; }
+
+  /* ── Stats band ── */
+  .stats-band-grid { grid-template-columns: 1fr 1fr !important; }
+
+  /* ── Location ── */
+  .location-split { grid-template-columns: 1fr !important; gap:0 !important; }
+  .location-map-block { min-height:380px; }
+
+  /* ── Reviews ── */
+  .reviews-section { padding:6rem 0; }
+  .reviews-masonry { columns: 2 !important; }
+
+  /* ── Menu page ── */
+  .menu-page-layout { grid-template-columns: 1fr !important; }
+  .menu-sidebar { display:none; }
+  .menu-cat-bar { display:flex !important; }
+  .menu-search-row { padding:1.5rem 1.5rem 0 !important; }
+  .menu-cards-area { padding:2rem 1.5rem 5rem !important; }
+  .menu-cards-grid { grid-template-columns: 1fr 1fr !important; }
+  .dough-legend { padding:2.5rem 1.5rem !important; grid-template-columns:1fr !important; }
+
+  /* ── Recensioni page ── */
+  .recens-hero-grid { grid-template-columns:1fr !important; }
+  .score-breakdown { display:none; }
+  .recens-filters { padding:1.5rem 1.5rem !important; }
+  .recens-main { padding:3rem 1.5rem 6rem !important; }
+  .recens-grid { columns:2 !important; }
+
+  /* ── Dove siamo page ── */
+  .dove-split { grid-template-columns:1fr !important; }
+  .dove-map { border-right:none !important; border-bottom:1px solid var(--border); min-height:400px; }
+  .dove-map iframe { min-height:360px; }
+  .dove-info { padding:3rem 1.5rem !important; }
+  .services-grid { grid-template-columns:1fr 1fr !important; }
+  .poi-grid { grid-template-columns:1fr 1fr !important; }
+  .neighbourhood { padding:4rem 1.5rem !important; }
+
+  /* ── Footer ── */
+  .footer-inner { grid-template-columns:1fr 1fr !important; gap:2rem !important; }
+  .footer-bottom { flex-direction:column; align-items:flex-start; }
+}
+
+/* ══════════════════════════════════════
+   MOBILE ≤ 600px
+══════════════════════════════════════ */
+@media (max-width: 600px) {
+
+  body { font-size:16px; }
+  .container { padding:0 1.2rem; }
+
+  /* ── Nav ── */
+  nav { padding:.85rem 1.2rem !important; }
+
+  /* ── Hero ── */
+  .hero { padding:7rem 1.2rem 4rem; }
+  .hero-title { font-size:clamp(2.6rem,13vw,4rem) !important; }
+  .hero-eyebrow { font-size:.68rem; }
+  .hero-actions { flex-direction:column; gap:.8rem; }
+  .hero-actions .btn-primary,
+  .hero-actions .btn-outline { width:100%; text-align:center; }
+
+  /* ── Section titles ── */
+  .section-title { font-size:clamp(1.8rem,7vw,2.6rem); }
+  .page-title    { font-size:clamp(2.2rem,10vw,3.2rem) !important; }
+  .page-hero { padding:8rem 1.2rem 2.5rem !important; }
+
+  /* ── About ── */
+  .about { padding:4rem 0; }
+  .about-frame { aspect-ratio:3/2; }
+
+  /* ── Menu preview (homepage) ── */
+  .menu-preview-grid { grid-template-columns:1fr !important; }
+  .menu-tabs-top { flex-wrap:wrap; }
+
+  /* ── Stats band ── */
+  .stats-band-grid { grid-template-columns:1fr 1fr !important; }
+
+  /* ── Reviews ── */
+  .reviews-masonry { columns:1 !important; }
+
+  /* ── Menu page ── */
+  .menu-cards-grid { grid-template-columns:1fr !important; }
+  .menu-cat-bar { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .menu-cat-btn { font-size:.72rem !important; padding:.85rem .9rem !important; white-space:nowrap; }
+
+  /* ── Recensioni ── */
+  .recens-grid { columns:1 !important; }
+  .hero-score { gap:1.5rem; }
+  .score-big { font-size:3.5rem; }
+
+  /* ── Dove siamo ── */
+  .dove-map, .dove-map iframe { min-height:280px !important; }
+  .services-grid { grid-template-columns:1fr !important; }
+  .poi-grid { grid-template-columns:1fr 1fr !important; }
+  .cta-row { flex-direction:column; }
+  .cta-row .btn-primary,
+  .cta-row .btn-outline,
+  .cta-row .btn-teal { text-align:center; }
+
+  /* ── Footer ── */
+  .footer-inner { grid-template-columns:1fr !important; }
+  .footer-bottom { flex-direction:column; align-items:flex-start; }
+
+  /* ── Buttons ── */
+  .btn-primary, .btn-outline, .btn-teal { padding:.85rem 2rem; font-size:.8rem; }
+}

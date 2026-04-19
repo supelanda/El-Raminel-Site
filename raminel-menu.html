@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu — El Raminel, Rovereto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Raleway:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="raminel-base.css">
+<link rel="stylesheet" href="raminel-responsive.css">
+<style>
+.page-hero {
+  display:grid; grid-template-columns:1fr auto; align-items:end; gap:3rem;
+  padding:10rem 3rem 4rem;
+}
+.hero-dough-callout { display:flex; flex-direction:column; align-items:flex-end; gap:.8rem; padding-bottom:.5rem; opacity:0; animation:fadeUp .8s .55s forwards; }
+.dc-label { font-family:'Raleway',sans-serif; font-size:.65rem; font-weight:700; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); }
+.dough-pills { display:flex; gap:.5rem; flex-wrap:wrap; justify-content:flex-end; }
+.dough-pill { font-family:'Raleway',sans-serif; font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; border:1.5px solid var(--border); color:var(--muted); padding:.45rem 1rem; cursor:pointer; background:transparent; transition:all .2s; }
+.dough-pill:hover, .dough-pill.active { background:var(--teal); color:var(--ink); border-color:var(--teal); }
+.hero-note { font-size:.78rem; color:var(--muted); font-style:italic; text-align:right; }
+
+.controls-bar { position:sticky; top:0; z-index:90; background:rgba(8,18,21,.97); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); }
+.cat-tabs { display:flex; align-items:center; overflow-x:auto; border-bottom:1px solid var(--border); }
+.cat-tabs::-webkit-scrollbar { height:0; }
+.menu-cat-btn { font-family:'Raleway',sans-serif; font-size:.75rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; background:transparent; color:var(--muted); border:none; padding:1.1rem 1.6rem; cursor:pointer; white-space:nowrap; border-bottom:2px solid transparent; margin-bottom:-1px; transition:color .2s, border-color .2s; display:flex; align-items:center; gap:.45rem; }
+.menu-cat-btn:hover { color:var(--cream); }
+.menu-cat-btn.active { color:var(--teal); border-bottom-color:var(--teal); }
+.menu-cat-btn .tab-count { font-size:.62rem; background:rgba(104,174,186,.12); color:var(--teal); padding:.1rem .4rem; border-radius:20px; }
+
+.filter-row { display:flex; align-items:center; gap:.7rem; padding:.8rem 3rem; flex-wrap:wrap; border-bottom:1px solid var(--border-s); }
+.filter-pill-sm { font-family:'Raleway',sans-serif; font-size:.7rem; font-weight:600; letter-spacing:.1em; text-transform:capitalize; background:transparent; color:var(--muted); border:1px solid var(--border); padding:.3rem .85rem; cursor:pointer; transition:all .18s; }
+.filter-pill-sm:hover { border-color:rgba(104,174,186,.4); color:var(--cream); }
+.filter-pill-sm.active { background:rgba(104,174,186,.1); color:var(--teal-lt); border-color:rgba(104,174,186,.45); }
+.sort-wrap { margin-left:auto; display:flex; align-items:center; gap:.6rem; flex-shrink:0; }
+.sort-select { font-family:'Raleway',sans-serif; font-size:.78rem; font-weight:500; background:transparent; color:var(--cream); border:1px solid var(--border); padding:.3rem .9rem; cursor:pointer; outline:none; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2368aeba'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right .6rem center; padding-right:1.8rem; transition:border-color .2s; }
+.sort-select option { background:#0c1517; color:var(--cream); }
+.result-count { font-size:.75rem; color:var(--muted); flex-shrink:0; }
+
+.menu-area { position:relative; z-index:1; padding:3rem 3rem 6rem; max-width:1400px; margin:0 auto; }
+.menu-cards-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1px; background:var(--border); border:1px solid var(--border); }
+
+.pizza-card { background:var(--panel); padding:0; position:relative; overflow:hidden; display:flex; flex-direction:column; cursor:default; transition:background .25s; }
+.pizza-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; opacity:0; transition:opacity .25s; }
+.pizza-card:hover { background:var(--panel-lt); }
+.pizza-card:hover::before { opacity:1; }
+.pizza-card[data-cat="pizza"]::before { background:var(--teal); }
+.pizza-card[data-cat="antipasti"]::before { background:var(--rose); }
+.pizza-card[data-cat="primi"]::before { background:var(--amber); }
+.pizza-card[data-cat="secondi"]::before { background:#7aaa88; }
+.pizza-card[data-cat="dolci"]::before { background:var(--rose-lt); }
+.pizza-card.hidden { display:none; }
+
+.card-inner { padding:1.8rem 1.8rem 1.2rem 2rem; flex:1; display:flex; flex-direction:column; }
+.card-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:.7rem; }
+.card-badges { display:flex; flex-wrap:wrap; gap:.35rem; }
+.badge { font-family:'Raleway',sans-serif; font-size:.6rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; padding:.18rem .5rem; border:1px solid; }
+.badge-pizza { color:var(--teal); border-color:rgba(104,174,186,.3); background:rgba(104,174,186,.07); }
+.badge-antipasti { color:var(--rose-lt); border-color:rgba(143,105,99,.3); background:rgba(143,105,99,.07); }
+.badge-primi { color:var(--amber); border-color:rgba(237,187,100,.3); background:rgba(237,187,100,.07); }
+.badge-secondi { color:#8fcca0; border-color:rgba(122,170,136,.3); background:rgba(122,170,136,.06); }
+.badge-dolci { color:var(--rose-lt); border-color:rgba(184,148,144,.3); background:rgba(184,148,144,.06); }
+.badge-sig { color:var(--amber-lt); border-color:rgba(245,212,148,.25); background:rgba(245,212,148,.06); }
+.badge-veg { color:#8fcca0; border-color:rgba(122,170,136,.3); background:rgba(122,170,136,.06); }
+.badge-trt { color:var(--teal-lt); border-color:rgba(146,202,212,.25); background:rgba(146,202,212,.05); }
+.card-name { font-family:'DM Serif Display',serif; font-size:1.15rem; font-weight:400; color:var(--cream); line-height:1.15; }
+.card-desc { margin-top:.5rem; font-size:.85rem; font-style:italic; color:var(--muted); line-height:1.6; flex:1; }
+.card-doughs { margin-top:.9rem; display:flex; align-items:center; gap:.4rem; flex-wrap:wrap; }
+.dough-label-sm { font-family:'Raleway',sans-serif; font-size:.58rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); margin-right:.1rem; }
+.dough-tag { font-family:'Raleway',sans-serif; font-size:.58rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); border:1px solid rgba(104,174,186,.18); padding:.15rem .4rem; transition:all .2s; }
+.dough-tag.avail { color:var(--teal); border-color:rgba(104,174,186,.3); }
+.dough-tag.lit { background:var(--teal); color:var(--ink); border-color:var(--teal); }
+.card-footer { border-top:1px solid var(--border-s); margin-top:1.2rem; padding-top:.9rem; display:flex; gap:0; }
+.size-col { display:flex; flex-direction:column; align-items:center; flex:1; padding:.35rem; border-right:1px solid var(--border-s); transition:background .2s; }
+.size-col:last-child { border-right:none; }
+.size-col:hover { background:rgba(104,174,186,.04); }
+.size-name { font-family:'Raleway',sans-serif; font-size:.58rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:.25rem; }
+.size-price { font-family:'DM Serif Display',serif; font-size:.98rem; color:var(--cream); }
+.size-price.hi { color:var(--amber); font-size:1.05rem; }
+.size-cm { font-size:.54rem; color:var(--muted); opacity:.55; margin-top:.08rem; }
+.card-price-single { border-top:1px solid var(--border-s); margin-top:1.2rem; padding-top:.85rem; }
+.price-main { font-family:'DM Serif Display',serif; font-size:1.05rem; color:var(--amber); }
+
+.empty-state { grid-column:1/-1; padding:5rem 2rem; text-align:center; display:none; }
+.empty-state.on { display:block; }
+.empty-icon { font-size:2.5rem; margin-bottom:.7rem; opacity:.25; display:block; }
+.empty-title { font-family:'DM Serif Display',serif; font-size:1.3rem; color:var(--cream); margin-bottom:.35rem; }
+.empty-sub { font-size:.88rem; color:var(--muted); font-style:italic; }
+.empty-reset { margin-top:1.2rem; font-family:'Raleway',sans-serif; font-size:.75rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--teal); background:none; border:1px solid var(--border); padding:.55rem 1.4rem; cursor:pointer; transition:border-color .2s; }
+.empty-reset:hover { border-color:var(--teal); }
+
+.dough-legend { position:relative; z-index:1; background:var(--deep); border-top:1px solid var(--border); padding:3rem; display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; }
+.legend-item {}
+.legend-name { font-family:'DM Serif Display',serif; font-size:1rem; color:var(--cream); margin-bottom:.25rem; }
+.legend-desc { font-size:.83rem; color:var(--muted); line-height:1.5; }
+
+@keyframes cardIn { to{opacity:1;transform:translateY(0)} }
+.pizza-card { opacity:0; transform:translateY(10px); transition:opacity .4s ease, transform .4s ease, background .25s; }
+.pizza-card.appeared { opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <ul class="nav-left">
+    <li class="nav-links-item"><a href="index.html#about">Storia</a></li>
+    <li class="nav-links-item"><a href="#" class="active">Menu</a></li>
+  </ul>
+  <a href="index.html" class="nav-logo">El <em>Raminel</em></a>
+  <ul class="nav-right">
+    <li class="nav-links-item"><a href="raminel-recensioni.html">Recensioni</a></li>
+    <li class="nav-links-item"><a href="raminel-dove-siamo.html">Dove siamo</a></li>
+    <li><a href="tel:+390464" class="nav-cta">Prenota</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Apri menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<ul class="nav-mobile-menu">
+  <li><a href="index.html#about">Storia</a></li>
+  <li><a href="#" class="active">Menu</a></li>
+  <li><a href="raminel-recensioni.html">Recensioni</a></li>
+  <li><a href="raminel-dove-siamo.html">Dove siamo</a></li>
+  <a href="tel:+390464" class="nav-mobile-cta">Prenota</a>
+</ul>
+
+<section class="page-hero">
+  <div>
+    <span class="eyebrow">Rovereto · Corso Bettini</span>
+    <h1 class="page-title">Il nostro<em>menu.</em></h1>
+    <p class="page-sub">Pizza artigianale, cucina trentina, pasta fatta in casa. Ingredienti del territorio — ogni giorno.</p>
+  </div>
+  <div class="hero-dough-callout">
+    <span class="dc-label">Filtra per impasto pizza</span>
+    <div class="dough-pills">
+      <button class="dough-pill active" data-dough="all">Tutti</button>
+      <button class="dough-pill" data-dough="classica">Classico</button>
+      <button class="dough-pill" data-dough="integrale">Integrale</button>
+      <button class="dough-pill" data-dough="semi">Ai semi</button>
+    </div>
+    <p class="hero-note">Gli impasti sono disponibili su richiesta.</p>
+  </div>
+</section>
+
+<div class="controls-bar" id="controls">
+  <div class="cat-tabs" role="tablist">
+    <button class="menu-cat-btn active" onclick="setCategory('all',this)">Tutto <span class="tab-count" id="tc-all">36</span></button>
+    <button class="menu-cat-btn" onclick="setCategory('pizza',this)">🍕 Pizza <span class="tab-count" id="tc-pizza">14</span></button>
+    <button class="menu-cat-btn" onclick="setCategory('antipasti',this)">🫒 Antipasti <span class="tab-count" id="tc-antipasti">6</span></button>
+    <button class="menu-cat-btn" onclick="setCategory('primi',this)">🍝 Primi <span class="tab-count" id="tc-primi">7</span></button>
+    <button class="menu-cat-btn" onclick="setCategory('secondi',this)">🥩 Secondi <span class="tab-count" id="tc-secondi">6</span></button>
+    <button class="menu-cat-btn" onclick="setCategory('dolci',this)">🍮 Dolci <span class="tab-count" id="tc-dolci">5</span></button>
+  </div>
+  <div class="filter-row">
+    <button class="filter-pill-sm active" onclick="setSpecial('all',this)">Tutti</button>
+    <button class="filter-pill-sm" onclick="setSpecial('sig',this)">⭐ Signature</button>
+    <button class="filter-pill-sm" onclick="setSpecial('veg',this)">🌿 Vegetariano</button>
+    <button class="filter-pill-sm" onclick="setSpecial('trt',this)">🏔 Trentino</button>
+    <div class="sort-wrap">
+      <select class="sort-select" id="sort-select" onchange="applySort()">
+        <option value="default">Ordine del menu</option>
+        <option value="price-asc">Prezzo: crescente</option>
+        <option value="price-desc">Prezzo: decrescente</option>
+        <option value="name-asc">Nome: A → Z</option>
+      </select>
+      <span class="result-count" id="result-count">36 piatti</span>
+    </div>
+  </div>
+</div>
+
+<div class="menu-area">
+<div class="menu-cards-grid" id="menuGrid">
+<div class="empty-state" id="emptyState"><span class="empty-icon">🍴</span><div class="empty-title">Nessun piatto trovato</div><div class="empty-sub">Prova un altro filtro.</div><button class="empty-reset" onclick="resetAll()">Azzera filtri</button></div>
+
+<!-- PIZZA -->
+<div class="pizza-card" data-cat="pizza" data-dough="classica integrale semi" data-special="veg" data-price="7.00" data-name="margherita" style="animation-delay:.04s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-pizza">Pizza</span><span class="badge badge-veg">🌿 Veg</span></div></div><div class="card-name">Margherita</div><div class="card-desc">Pomodoro, fior di latte, basilico fresco, olio EVO. La classica senza compromessi.</div><div class="card-doughs"><span class="dough-label-sm">Impasto:</span><span class="dough-tag avail" data-d="classica">Classico</span><span class="dough-tag avail" data-d="integrale">Integrale</span><span class="dough-tag avail" data-d="semi">Ai semi</span></div></div>
+  <div class="card-footer"><div class="size-col"><div class="size-name">Mini</div><div class="size-price">€ 5,00</div><div class="size-cm">22 cm</div></div><div class="size-col"><div class="size-name">Normale</div><div class="size-price hi">€ 7,00</div><div class="size-cm">30 cm</div></div><div class="size-col"><div class="size-name">Maxi</div><div class="size-price">€ 9,50</div><div class="size-cm">40 cm</div></div></div>
+</div>
+<div class="pizza-card" data-cat="pizza" data-dough="classica integrale semi" data-special="sig" data-price="10.00" data-name="re sole" style="animation-delay:.07s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-pizza">Pizza</span><span class="badge badge-sig">⭐ Signature</span></div></div><div class="card-name">Re Sole</div><div class="card-desc">La pizza signature del Raminel — ingredienti selezionati su base di pomodoro aromatico. Impasto croccante e leggero.</div><div class="card-doughs"><span class="dough-label-sm">Impasto:</span><span class="dough-tag avail" data-d="classica">Classico</span><span class="dough-tag avail" data-d="integrale">Integrale</span><span class="dough-tag avail" data-d="semi">Ai semi</span></div></div>
+  <div class="card-footer"><div class="size-col"><div class="size-name">Mini</div><div class="size-price">€ 7,00</div><div class="size-cm">22 cm</div></div><div class="size-col"><div class="size-name">Normale</div><div class="size-price hi">€ 10,00</div><div class="size-cm">30 cm</div></div><div class="size-col"><div class="size-name">Maxi</div><div class="size-price">€ 14,00</div><div class="size-cm">40 cm</div></div></div>
+</div>
+<div class="pizza-card" data-cat="pizza" data-dough="classica integrale semi" data-special="sig" data-price="11.00" data-name="burrata e crudo" style="animation-delay:.10s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-pizza">Pizza</span><span class="badge badge-sig">⭐ Signature</span></div></div><div class="card-name">Burrata e Crudo</div><div class="card-desc">Burrata fresca, prosciutto crudo stagionato, pomodorini datterini, rucola selvaggia, olio EVO. Irresistibile.</div><div class="card-doughs"><span class="dough-label-sm">Impasto:</span><span class="dough-tag avail" data-d="classica">Classico</span><span class="dough-tag avail" data-d="integrale">Integrale</span><span class="dough-tag avail" data-d="semi">Ai semi</span></div></div>
+  <div class="card-footer"><div class="size-col"><div class="size-name">Mini</div><div class="size-price">€ 8,00</div><div class="size-cm">22 cm</div></div><div class="size-col"><div class="size-name">Normale</div><div class="size-price hi">€ 11,00</div><div class="size-cm">30 cm</div></div><div class="size-col"><div class="size-name">Maxi</div><div class="size-price">€ 15,00</div><div class="size-cm">40 cm</div></div></div>
+</div>
+<div class="pizza-card" data-cat="pizza" data-dough="classica integrale" data-special="" data-price="9.00" data-name="pancetta e patate" style="animation-delay:.13s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-pizza">Pizza</span></div></div><div class="card-name">Pancetta e Patate</div><div class="card-desc">Pancetta croccante, patate a fettine, rosmarino, fior di latte. Il comfort del Trentino in una pizza.</div><div class="card-doughs"><span class="dough-label-sm">Impasto:</span><span class="dough-tag avail" data-d="classica">Classico</span><span class="dough-tag avail" data-d="integrale">Integrale</span></div></div>
+  <div class="card-footer"><div class="size-col"><div class="size-name">Mini</div><div class="size-price">€ 6,00</div><div class="size-cm">22 cm</div></div><div class="size-col"><div class="size-name">Normale</div><div class="size-price hi">€ 9,00</div><div class="size-cm">30 cm</div></div><div class="size-col"><div class="size-name">Maxi</div><div class="size-price">€ 12,50</div><div class="size-cm">40 cm</div></div></div>
+</div>
+<div class="pizza-card" data-cat="pizza" data-dough="classica integrale semi" data-special="trt" data-price="10.00" data-name="speck gorgonzola" style="animation-delay:.16s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-pizza">Pizza</span><span class="badge badge-trt">🏔 Trentino</span></div></div><div class="card-name">Speck &amp; Gorgonzola</div><div class="card-desc">Speck Alto Adige DOP, gorgonzola dolce, noci di montagna, miele. Il Trentino in ogni morso.</div><div class="card-doughs"><span class="dough-label-sm">Impasto:</span><span class="dough-tag avail" data-d="classica">Classico</span><span class="dough-tag avail" data-d="integrale">Integrale</span><span class="dough-tag avail" data-d="semi">Ai semi</span></div></div>
+  <div class="card-footer"><div class="size-col"><div class="size-name">Mini</div><div class="size-price">€ 7,00</div><div class="size-cm">22 cm</div></div><div class="size-col"><div class="size-name">Normale</div><div class="size-price hi">€ 10,00</div><div class="size-cm">30 cm</div></div><div class="size-col"><div class="size-name">Maxi</div><div class="size-price">€ 14,00</div><div class="size-cm">40 cm</div></div></div>
+</div>
+<div class="pizza-card" data-cat="pizza" data-dough="classica integrale semi" data-special="veg" data-price="9.00" data-name="quattro formaggi" style="animation-delay:.19s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-pizza">Pizza</span><span class="badge badge-veg">🌿 Veg</span><span class="badge badge-sig">⭐ Signature</span></div></div><div class="card-name">Quattro Formaggi</div><div class="card-desc">Fior di latte, gorgonzola, asiago trentino stagionato, grana padano. "Greatest 4 Formaggi ever."</div><div class="card-doughs"><span class="dough-label-sm">Impasto:</span><span class="dough-tag avail" data-d="classica">Classico</span><span class="dough-tag avail" data-d="integrale">Integrale</span><span class="dough-tag avail" data-d="semi">Ai semi</span></div></div>
+  <div class="card-footer"><div class="size-col"><div class="size-name">Mini</div><div class="size-price">€ 6,50</div><div class="size-cm">22 cm</div></div><div class="size-col"><div class="size-name">Normale</div><div class="size-price hi">€ 9,00</div><div class="size-cm">30 cm</div></div><div class="size-col"><div class="size-name">Maxi</div><div class="size-price">€ 12,50</div><div class="size-cm">40 cm</div></div></div>
+</div>
+<div class="pizza-card" data-cat="pizza" data-dough="classica integrale semi" data-special="" data-price="8.00" data-name="diavola" style="animation-delay:.22s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-pizza">Pizza</span></div></div><div class="card-name">Diavola</div><div class="card-desc">Salame piccante, mozzarella, pomodoro, peperoncino. Carattere deciso, impatto immediato.</div><div class="card-doughs"><span class="dough-label-sm">Impasto:</span><span class="dough-tag avail" data-d="classica">Classico</span><span class="dough-tag avail" data-d="integrale">Integrale</span></div></div>
+  <div class="card-footer"><div class="size-col"><div class="size-name">Mini</div><div class="size-price">€ 5,50</div><div class="size-cm">22 cm</div></div><div class="size-col"><div class="size-name">Normale</div><div class="size-price hi">€ 8,00</div><div class="size-cm">30 cm</div></div><div class="size-col"><div class="size-name">Maxi</div><div class="size-price">€ 11,00</div><div class="size-cm">40 cm</div></div></div>
+</div>
+<div class="pizza-card" data-cat="pizza" data-dough="classica integrale semi" data-special="" data-price="8.50" data-name="capricciosa" style="animation-delay:.25s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-pizza">Pizza</span></div></div><div class="card-name">Capricciosa</div><div class="card-desc">Prosciutto cotto, funghi, carciofi, olive, mozzarella. La regina della tradizione italiana.</div><div class="card-doughs"><span class="dough-label-sm">Impasto:</span><span class="dough-tag avail" data-d="classica">Classico</span><span class="dough-tag avail" data-d="integrale">Integrale</span><span class="dough-tag avail" data-d="semi">Ai semi</span></div></div>
+  <div class="card-footer"><div class="size-col"><div class="size-name">Mini</div><div class="size-price">€ 6,00</div><div class="size-cm">22 cm</div></div><div class="size-col"><div class="size-name">Normale</div><div class="size-price hi">€ 8,50</div><div class="size-cm">30 cm</div></div><div class="size-col"><div class="size-name">Maxi</div><div class="size-price">€ 12,00</div><div class="size-cm">40 cm</div></div></div>
+</div>
+<div class="pizza-card" data-cat="pizza" data-dough="classica integrale semi" data-special="veg trt" data-price="9.50" data-name="erba grano" style="animation-delay:.28s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-pizza">Pizza</span><span class="badge badge-veg">🌿 Veg</span><span class="badge badge-trt">🏔 Trentino</span></div></div><div class="card-name">Erba di Grano</div><div class="card-desc">Impasto verde all'erba di grano, mozzarella, pomodorini, rucola, olio EVO. Leggera e profumata.</div><div class="card-doughs"><span class="dough-label-sm">Impasto:</span><span class="dough-tag lit" data-d="semi">Ai semi ✦</span></div></div>
+  <div class="card-footer"><div class="size-col"><div class="size-name">Mini</div><div class="size-price">€ 6,50</div><div class="size-cm">22 cm</div></div><div class="size-col"><div class="size-name">Normale</div><div class="size-price hi">€ 9,50</div><div class="size-cm">30 cm</div></div><div class="size-col"><div class="size-name">Maxi</div><div class="size-price">€ 13,00</div><div class="size-cm">40 cm</div></div></div>
+</div>
+<div class="pizza-card" data-cat="pizza" data-dough="classica integrale" data-special="" data-price="8.00" data-name="napoletana" style="animation-delay:.31s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-pizza">Pizza</span></div></div><div class="card-name">Napoletana</div><div class="card-desc">Pomodoro, mozzarella, acciughe del Cantabrico, capperi di Pantelleria, origano. Un omaggio a Napoli.</div><div class="card-doughs"><span class="dough-label-sm">Impasto:</span><span class="dough-tag avail" data-d="classica">Classico</span><span class="dough-tag avail" data-d="integrale">Integrale</span></div></div>
+  <div class="card-footer"><div class="size-col"><div class="size-name">Mini</div><div class="size-price">€ 5,50</div><div class="size-cm">22 cm</div></div><div class="size-col"><div class="size-name">Normale</div><div class="size-price hi">€ 8,00</div><div class="size-cm">30 cm</div></div><div class="size-col"><div class="size-name">Maxi</div><div class="size-price">€ 11,00</div><div class="size-cm">40 cm</div></div></div>
+</div>
+<div class="pizza-card" data-cat="pizza" data-dough="classica integrale semi" data-special="trt" data-price="9.00" data-name="raminel" style="animation-delay:.34s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-pizza">Pizza</span><span class="badge badge-trt">🏔 Trentino</span><span class="badge badge-sig">⭐ Signature</span></div></div><div class="card-name">El Raminel</div><div class="card-desc">La pizza del ristorante: carne salada trentina, rucola, pomodorini, scaglie di grana. Unica come il locale.</div><div class="card-doughs"><span class="dough-label-sm">Impasto:</span><span class="dough-tag avail" data-d="classica">Classico</span><span class="dough-tag avail" data-d="integrale">Integrale</span><span class="dough-tag avail" data-d="semi">Ai semi</span></div></div>
+  <div class="card-footer"><div class="size-col"><div class="size-name">Mini</div><div class="size-price">€ 6,50</div><div class="size-cm">22 cm</div></div><div class="size-col"><div class="size-name">Normale</div><div class="size-price hi">€ 9,00</div><div class="size-cm">30 cm</div></div><div class="size-col"><div class="size-name">Maxi</div><div class="size-price">€ 12,50</div><div class="size-cm">40 cm</div></div></div>
+</div>
+<div class="pizza-card" data-cat="pizza" data-dough="classica integrale semi" data-special="veg" data-price="8.50" data-name="verdure grigliate" style="animation-delay:.37s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-pizza">Pizza</span><span class="badge badge-veg">🌿 Veg</span></div></div><div class="card-name">Verdure Grigliate</div><div class="card-desc">Verdure di stagione grigliate, mozzarella, origano, olio aromatico. Cambia con le stagioni.</div><div class="card-doughs"><span class="dough-label-sm">Impasto:</span><span class="dough-tag avail" data-d="classica">Classico</span><span class="dough-tag avail" data-d="integrale">Integrale</span><span class="dough-tag avail" data-d="semi">Ai semi</span></div></div>
+  <div class="card-footer"><div class="size-col"><div class="size-name">Mini</div><div class="size-price">€ 6,00</div><div class="size-cm">22 cm</div></div><div class="size-col"><div class="size-name">Normale</div><div class="size-price hi">€ 8,50</div><div class="size-cm">30 cm</div></div><div class="size-col"><div class="size-name">Maxi</div><div class="size-price">€ 11,50</div><div class="size-cm">40 cm</div></div></div>
+</div>
+<div class="pizza-card" data-cat="pizza" data-dough="classica integrale" data-special="" data-price="9.00" data-name="prosciutto crudo rucola" style="animation-delay:.40s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-pizza">Pizza</span></div></div><div class="card-name">Prosciutto Crudo &amp; Rucola</div><div class="card-desc">Prosciutto crudo DOP, rucola, pomodoro, mozzarella. Un classico di rara eleganza.</div><div class="card-doughs"><span class="dough-label-sm">Impasto:</span><span class="dough-tag avail" data-d="classica">Classico</span><span class="dough-tag avail" data-d="integrale">Integrale</span></div></div>
+  <div class="card-footer"><div class="size-col"><div class="size-name">Mini</div><div class="size-price">€ 6,50</div><div class="size-cm">22 cm</div></div><div class="size-col"><div class="size-name">Normale</div><div class="size-price hi">€ 9,00</div><div class="size-cm">30 cm</div></div><div class="size-col"><div class="size-name">Maxi</div><div class="size-price">€ 12,50</div><div class="size-cm">40 cm</div></div></div>
+</div>
+<div class="pizza-card" data-cat="pizza" data-dough="classica integrale semi" data-special="trt" data-price="10.00" data-name="bresaola funghi" style="animation-delay:.43s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-pizza">Pizza</span><span class="badge badge-trt">🏔 Trentino</span></div></div><div class="card-name">Bresaola &amp; Funghi Porcini</div><div class="card-desc">Bresaola della Valtellina, funghi porcini trifolati, mozzarella, timo fresco.</div><div class="card-doughs"><span class="dough-label-sm">Impasto:</span><span class="dough-tag avail" data-d="classica">Classico</span><span class="dough-tag avail" data-d="integrale">Integrale</span><span class="dough-tag avail" data-d="semi">Ai semi</span></div></div>
+  <div class="card-footer"><div class="size-col"><div class="size-name">Mini</div><div class="size-price">€ 7,00</div><div class="size-cm">22 cm</div></div><div class="size-col"><div class="size-name">Normale</div><div class="size-price hi">€ 10,00</div><div class="size-cm">30 cm</div></div><div class="size-col"><div class="size-name">Maxi</div><div class="size-price">€ 14,00</div><div class="size-cm">40 cm</div></div></div>
+</div>
+
+<!-- ANTIPASTI -->
+<div class="pizza-card" data-cat="antipasti" data-dough="" data-special="trt sig" data-price="10.00" data-name="carne salada" style="animation-delay:.04s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-antipasti">Antipasto</span><span class="badge badge-trt">🏔 Trentino</span><span class="badge badge-sig">⭐ Signature</span></div></div><div class="card-name">Carne Salada Trentina</div><div class="card-desc">Carne salada affettata finemente, fagioli bianchi di Lamon, olio EVO, rucola fresca. Il sapore delle Alpi.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 10,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="antipasti" data-dough="" data-special="" data-price="12.00" data-name="carpaccio manzo" style="animation-delay:.07s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-antipasti">Antipasto</span></div></div><div class="card-name">Carpaccio di Manzo</div><div class="card-desc">Carpaccio con scaglie di grana padano, rucola selvatica e limone. Fresco, delicato, elegante.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 12,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="antipasti" data-dough="" data-special="veg" data-price="9.00" data-name="verdure grigliate antipasto" style="animation-delay:.10s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-antipasti">Antipasto</span><span class="badge badge-veg">🌿 Veg</span></div></div><div class="card-name">Verdure Grigliate</div><div class="card-desc">Selezione stagionale con olio aromatico alle erbe del Trentino. Cambia ogni giorno.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 9,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="antipasti" data-dough="" data-special="sig" data-price="11.00" data-name="pepata cozze" style="animation-delay:.13s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-antipasti">Antipasto</span><span class="badge badge-sig">⭐ Signature</span></div></div><div class="card-name">Pepata di Cozze</div><div class="card-desc">Cozze fresche in brodetto di pomodoro e pepe nero abbondante. Genuina, piena di sapore.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 11,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="antipasti" data-dough="" data-special="veg" data-price="8.00" data-name="insalatona" style="animation-delay:.16s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-antipasti">Antipasto</span><span class="badge badge-veg">🌿 Veg</span></div></div><div class="card-name">Insalatona El Raminel</div><div class="card-desc">Insalata mista abbondante con ingredienti freschi di stagione. Buona e abbondante — come diciamo sempre.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 8,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="antipasti" data-dough="" data-special="veg trt" data-price="9.00" data-name="tomino caldo" style="animation-delay:.19s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-antipasti">Antipasto</span><span class="badge badge-veg">🌿 Veg</span><span class="badge badge-trt">🏔 Trentino</span></div></div><div class="card-name">Tomino Caldo</div><div class="card-desc">Tomino trentino gratinato con miele di montagna, noci tostate e pane tostato.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 9,00</div></div></div>
+</div>
+
+<!-- PRIMI -->
+<div class="pizza-card" data-cat="primi" data-dough="" data-special="sig" data-price="15.00" data-name="spaghetti scoglio" style="animation-delay:.04s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-primi">Primo</span><span class="badge badge-sig">⭐ Signature</span></div></div><div class="card-name">Spaghetti allo Scoglio</div><div class="card-desc">Pasta fresca con frutti di mare, pomodorini, aglio e prezzemolo. "Quando voglio gli spaghetti allo scoglio — non ho dubbi, qui sono una garanzia."</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 15,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="primi" data-dough="" data-special="trt sig" data-price="14.00" data-name="tagliatelle cinghiale" style="animation-delay:.07s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-primi">Primo</span><span class="badge badge-trt">🏔 Trentino</span><span class="badge badge-sig">⭐ Signature</span></div></div><div class="card-name">Tagliatelle al Ragù di Cinghiale</div><div class="card-desc">Pasta fatta in casa al ragù di cinghiale trentino — lenta cottura, sapore intenso e profondo.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 14,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="primi" data-dough="" data-special="trt" data-price="12.00" data-name="canederli" style="animation-delay:.10s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-primi">Primo</span><span class="badge badge-trt">🏔 Trentino</span></div></div><div class="card-name">Canederli</div><div class="card-desc">Canederli allo speck in brodo trentino, oppure asciutti con burro e salvia. La tradizione in tavola.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 12,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="primi" data-dough="" data-special="veg trt" data-price="13.00" data-name="risotto funghi" style="animation-delay:.13s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-primi">Primo</span><span class="badge badge-veg">🌿 Veg</span><span class="badge badge-trt">🏔 Trentino</span></div></div><div class="card-name">Risotto ai Funghi Porcini</div><div class="card-desc">Risotto cremoso con funghi porcini e riduzione di vino bianco trentino. Eccellente.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 13,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="primi" data-dough="" data-special="trt sig" data-price="14.00" data-name="risotto mirtilli burrata" style="animation-delay:.16s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-primi">Primo</span><span class="badge badge-trt">🏔 Trentino</span><span class="badge badge-sig">⭐ Signature</span></div></div><div class="card-name">Risotto Mirtilli &amp; Burrata</div><div class="card-desc">Risotto ai mirtilli neri del Trentino con burrata pugliese. Abbinamento sorprendente, molto apprezzato.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 14,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="primi" data-dough="" data-special="trt" data-price="12.00" data-name="spatzle" style="animation-delay:.19s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-primi">Primo</span><span class="badge badge-trt">🏔 Trentino</span></div></div><div class="card-name">Spätzle Trentini</div><div class="card-desc">Spätzle con burro, speck affumicato e salvia. Delicati, avvolgenti — un classico delle Alpi.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 12,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="primi" data-dough="" data-special="trt" data-price="13.00" data-name="tagliatelle cervo" style="animation-delay:.22s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-primi">Primo</span><span class="badge badge-trt">🏔 Trentino</span></div></div><div class="card-name">Tagliatelle al Cervo</div><div class="card-desc">Pasta fatta in casa con ragù di cervo, riduzione di vino rosso e bacche di ginepro.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 13,00</div></div></div>
+</div>
+
+<!-- SECONDI -->
+<div class="pizza-card" data-cat="secondi" data-dough="" data-special="trt sig" data-price="16.00" data-name="coniglio umido" style="animation-delay:.04s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-secondi">Secondo</span><span class="badge badge-trt">🏔 Trentino</span><span class="badge badge-sig">⭐ Signature</span></div></div><div class="card-name">Coniglio in Umido</div><div class="card-desc">Coniglio trentino in umido con erbe aromatiche, vino bianco e polenta. "Non scorderò mai il coniglio in umido."</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 16,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="secondi" data-dough="" data-special="" data-price="18.00" data-name="tagliata manzo" style="animation-delay:.07s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-secondi">Secondo</span></div></div><div class="card-name">Tagliata di Manzo</div><div class="card-desc">Tagliata con rucola fresca, scaglie di grana padano e olio EVO. Cotta al punto giusto.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 18,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="secondi" data-dough="" data-special="trt sig" data-price="17.00" data-name="guancia maiale" style="animation-delay:.10s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-secondi">Secondo</span><span class="badge badge-trt">🏔 Trentino</span><span class="badge badge-sig">⭐ Signature</span></div></div><div class="card-name">Guancia di Maiale Brasata</div><div class="card-desc">Brasata lentamente con purè di sedano rapa e riduzione di vino rosso. Un secondo da antologia.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 17,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="secondi" data-dough="" data-special="" data-price="19.00" data-name="branzino forno" style="animation-delay:.13s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-secondi">Secondo</span></div></div><div class="card-name">Branzino al Forno</div><div class="card-desc">Branzino intero al forno con erbe aromatiche, limone e verdure di stagione.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 19,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="secondi" data-dough="" data-special="trt" data-price="16.00" data-name="costine brace" style="animation-delay:.16s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-secondi">Secondo</span><span class="badge badge-trt">🏔 Trentino</span></div></div><div class="card-name">Costine alla Brace</div><div class="card-desc">Costine di maiale alla brace con salsa BBQ trentina e crauti caramellati.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 16,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="secondi" data-dough="" data-special="trt" data-price="18.00" data-name="ragu cervo polenta" style="animation-delay:.19s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-secondi">Secondo</span><span class="badge badge-trt">🏔 Trentino</span></div></div><div class="card-name">Ragù di Cervo e Polenta</div><div class="card-desc">Ragù di cervo con polenta di Storo e mirtilli rossi. I sapori profondi della montagna.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 18,00</div></div></div>
+</div>
+
+<!-- DOLCI -->
+<div class="pizza-card" data-cat="dolci" data-dough="" data-special="sig" data-price="6.00" data-name="tiramisu" style="animation-delay:.04s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-dolci">Dolce</span><span class="badge badge-sig">⭐ Signature</span></div></div><div class="card-name">Tiramisù Fatto in Casa</div><div class="card-desc">"Il miglior tiramisù che abbia mai assaggiato. I went there a second time only for the Tiramisu." Preparato rigorosamente in casa ogni giorno.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 6,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="dolci" data-dough="" data-special="sig" data-price="6.00" data-name="creme brulee" style="animation-delay:.07s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-dolci">Dolce</span><span class="badge badge-sig">⭐ Signature</span></div></div><div class="card-name">Crème Brûlée</div><div class="card-desc">Crème brûlée alla cannella con semi di papavero. "Il semifreddo alla cannella — superlativo."</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 6,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="dolci" data-dough="" data-special="trt sig" data-price="5.00" data-name="crostata mirtilli" style="animation-delay:.10s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-dolci">Dolce</span><span class="badge badge-trt">🏔 Trentino</span><span class="badge badge-sig">⭐ Fatto in casa</span></div></div><div class="card-name">Crostata ai Mirtilli</div><div class="card-desc">Frolla fatta in casa con marmellata di mirtilli neri del Trentino. "C'era quasi troppa marmellata — ma non perché fosse troppo dolce."</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Fetta</div><div class="size-price hi">€ 5,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="dolci" data-dough="" data-special="" data-price="6.00" data-name="panna cotta" style="animation-delay:.13s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-dolci">Dolce</span></div></div><div class="card-name">Panna Cotta</div><div class="card-desc">Panna cotta alla vaniglia con coulis di frutti rossi del Trentino. Cremosa e delicata.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 6,00</div></div></div>
+</div>
+<div class="pizza-card" data-cat="dolci" data-dough="" data-special="" data-price="6.00" data-name="dolce del giorno" style="animation-delay:.16s">
+  <div class="card-inner"><div class="card-top"><div class="card-badges"><span class="badge badge-dolci">Dolce</span><span class="badge badge-trt">🏔 Stagionale</span></div></div><div class="card-name">Dolce del Giorno</div><div class="card-desc">La creazione quotidiana della cucina — preparata ogni mattina con prodotti stagionali. Chiedi al personale.</div></div>
+  <div class="card-footer"><div class="size-col" style="flex:none;padding:.7rem 1.2rem;align-items:flex-start;"><div class="size-name">Porzione</div><div class="size-price hi">€ 6,00</div></div></div>
+</div>
+
+</div><!-- /menuGrid -->
+</div><!-- /menu-area -->
+
+<div class="dough-legend">
+  <div class="legend-item">
+    <div class="legend-name">Classico</div>
+    <div class="legend-desc">Farina di tipo 0, alta idratazione, lunga lievitazione a freddo. La base della tradizione — croccante e digeribile.</div>
+  </div>
+  <div class="legend-item">
+    <div class="legend-name">Integrale</div>
+    <div class="legend-desc">Farina integrale macinata a pietra. Più fibre, più sapore, più carattere. La scelta di chi vuole qualcosa di diverso.</div>
+  </div>
+  <div class="legend-item">
+    <div class="legend-name">Ai Semi</div>
+    <div class="legend-desc">Impasto arricchito con semi misti (lino, girasole, sesamo). Croccante, leggero, con sentori di nocciola. La nostra specialità.</div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand"><div class="footer-logo">El <em>Raminel</em></div><div class="footer-tagline">Ristorante Pizzeria nel cuore di Rovereto<br>Corso Bettini · Trentino</div></div>
+    <div><span class="footer-col-title">Pagine</span><ul class="footer-links"><li><a href="index.html#about">Storia</a></li><li><a href="#">Menu</a></li><li><a href="raminel-recensioni.html">Recensioni</a></li><li><a href="raminel-dove-siamo.html">Dove siamo</a></li></ul></div>
+    <div><span class="footer-col-title">Contatti</span><div class="footer-address">Corso Bettini, 38068 Rovereto (TN)<br><br>Lun–Ven: 12:00–14:30 · 19:00–22:00<br>Sab: 12:00–14:30 · 19:00–22:30<br>Dom: 12:00–14:30 · 19:00–22:00</div></div>
+  </div>
+  <div class="footer-bottom"><div class="footer-copy">© 2025 El Raminel · Rovereto (TN)</div><div class="footer-copy">4,0 ★ · 601 recensioni Google</div></div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+  document.getElementById('navHamburger').addEventListener('click', function() { const o = nav.classList.toggle('nav-open'); this.setAttribute('aria-expanded', o); });
+  document.addEventListener('click', e => { if(!nav.contains(e.target)) nav.classList.remove('nav-open'); });
+
+  let activeCategory = 'all', activeDough = 'all', activeSpecial = 'all', activeSort = 'default';
+  const grid = document.getElementById('menuGrid');
+  const allCards = () => Array.from(grid.querySelectorAll('.pizza-card:not(.empty-state)'));
+
+  function setCategory(cat, btn) {
+    activeCategory = cat;
+    document.querySelectorAll('.menu-cat-btn').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active'); render();
+  }
+  function setSpecial(spec, btn) {
+    activeSpecial = spec;
+    document.querySelectorAll('.filter-pill-sm').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active'); render();
+  }
+  function applySort() { activeSort = document.getElementById('sort-select').value; render(); }
+  function resetAll() {
+    activeCategory='all'; activeDough='all'; activeSpecial='all'; activeSort='default';
+    document.querySelectorAll('.menu-cat-btn')[0].click();
+    document.querySelectorAll('.filter-pill-sm')[0].click();
+    document.querySelectorAll('.dough-pill')[0].click();
+  }
+
+  document.querySelectorAll('.dough-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.dough-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeDough = btn.dataset.dough; render();
+    });
+  });
+
+  function render() {
+    const cards = allCards(); let visible = 0;
+    cards.forEach(card => {
+      const catOk = activeCategory === 'all' || card.dataset.cat === activeCategory;
+      const doughOk = activeDough === 'all' || card.dataset.cat !== 'pizza' || card.dataset.dough.includes(activeDough);
+      const specOk = activeSpecial === 'all' || card.dataset.special.includes(activeSpecial);
+      if(catOk && doughOk && specOk) { card.classList.remove('hidden'); visible++; }
+      else { card.classList.add('hidden'); }
+    });
+    const visCards = cards.filter(c => !c.classList.contains('hidden'));
+    visCards.sort((a,b) => {
+      if(activeSort==='price-asc') return parseFloat(a.dataset.price)-parseFloat(b.dataset.price);
+      if(activeSort==='price-desc') return parseFloat(b.dataset.price)-parseFloat(a.dataset.price);
+      if(activeSort==='name-asc') return a.dataset.name.localeCompare(b.dataset.name,'it');
+      return 0;
+    });
+    visCards.forEach(c => grid.appendChild(c));
+    document.getElementById('emptyState').classList.toggle('on', visible === 0);
+    document.getElementById('result-count').textContent = visible + (visible===1?' piatto':' piatti');
+    ['all','pizza','antipasti','primi','secondi','dolci'].forEach(cat => {
+      const el = document.getElementById('tc-'+cat); if(!el) return;
+      const count = cat==='all' ? cards.filter(c => !c.classList.contains('hidden')).length
+        : cards.filter(c => c.dataset.cat===cat && !c.classList.contains('hidden')).length;
+      el.textContent = count;
+    });
+  }
+
+  const appearObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) { setTimeout(() => e.target.classList.add('appeared'), (allCards().indexOf(e.target)%3)*60); appearObs.unobserve(e.target); } });
+  }, {threshold:.05});
+  allCards().forEach(c => appearObs.observe(c));
+</script>
+</body>
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Raminel — Ristorante Pizzeria · Rovereto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="raminel-base.css">
+<link rel="stylesheet" href="raminel-responsive.css">
+<style>
+.hero {
+  position:relative; min-height:100vh; z-index:1;
+  display:grid; grid-template-columns:1fr 1fr; overflow:hidden;
+}
+.hero-left {
+  background:linear-gradient(135deg,#0c1517 0%,#111e22 100%);
+  padding:10rem 3.5rem 5rem 4rem;
+  display:flex; flex-direction:column; justify-content:center;
+  position:relative; z-index:1;
+}
+.hero-left::after {
+  content:''; position:absolute; top:0; right:-50px; bottom:0; width:100px;
+  background:linear-gradient(135deg,#0c1517 0%,#111e22 100%);
+  clip-path:polygon(0 0,0 100%,100% 0); z-index:2;
+}
+.hero-right {
+  background:var(--panel);
+  display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
+}
+.hero-right::before {
+  content:''; position:absolute;
+  width:420px; height:420px; border-radius:50%;
+  border:1px solid rgba(104,174,186,.1);
+  top:50%; left:50%; transform:translate(-50%,-50%);
+}
+.hero-right::after {
+  content:''; position:absolute;
+  width:260px; height:260px; border-radius:50%;
+  border:1px solid rgba(237,187,100,.08);
+  top:50%; left:50%; transform:translate(-50%,-50%);
+}
+.hero-eyebrow {
+  font-size:.7rem; font-weight:700; letter-spacing:.4em; text-transform:uppercase;
+  color:var(--teal); margin-bottom:1.4rem;
+  display:flex; align-items:center; gap:.8rem;
+  opacity:0; animation:fadeUp .8s .1s forwards;
+}
+.hero-eyebrow::before { content:''; width:28px; height:1px; background:var(--teal); flex-shrink:0; }
+.hero-title {
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(3rem,5.5vw,6rem);
+  line-height:.95; font-weight:400; color:var(--cream); margin-bottom:1.8rem;
+  opacity:0; animation:fadeUp .9s .25s forwards;
+}
+.hero-title em { font-style:italic; color:var(--amber); display:block; }
+.hero-title span { color:var(--teal-lt); }
+.hero-sub {
+  font-size:.97rem; color:var(--muted); line-height:1.8; max-width:400px;
+  opacity:0; animation:fadeUp .9s .45s forwards;
+}
+.hero-actions {
+  display:flex; gap:1rem; margin-top:2.2rem; flex-wrap:wrap;
+  opacity:0; animation:fadeUp .8s .65s forwards;
+}
+.hero-deco { position:relative; z-index:1; text-align:center; padding:2.5rem; opacity:0; animation:fadeIn 1.2s .5s forwards; }
+.hero-deco-bg {
+  font-family:'DM Serif Display',serif; font-style:italic;
+  font-size:9rem; line-height:1; color:var(--teal); opacity:.05;
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  white-space:nowrap; pointer-events:none;
+}
+.hero-quote {
+  font-family:'DM Serif Display',serif; font-size:1.25rem; font-style:italic;
+  color:var(--cream); line-height:1.55; max-width:300px; position:relative;
+}
+.hero-quote::before {
+  content:'\201C'; font-size:5rem; line-height:.65;
+  color:var(--amber); opacity:.18; display:block;
+}
+.hero-quote-author {
+  font-family:'Raleway',sans-serif; font-size:.68rem; font-weight:700;
+  letter-spacing:.2em; text-transform:uppercase;
+  color:var(--teal); margin-top:.9rem; display:block;
+}
+.hero-badge {
+  position:absolute; bottom:2.5rem; left:4rem;
+  display:flex; align-items:center; gap:.8rem;
+  opacity:0; animation:fadeUp .8s 1s forwards;
+}
+.hero-badge-stars { color:var(--amber); font-size:.9rem; letter-spacing:.06em; }
+.hero-badge-sep { width:1px; height:16px; background:var(--border); }
+.hero-badge-text { font-size:.75rem; color:var(--muted); letter-spacing:.04em; }
+
+.about { padding:9rem 0; border-top:1px solid var(--border); }
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:6rem; align-items:center; }
+.about-intro {
+  font-family:'DM Serif Display',serif; font-size:1.3rem; font-style:italic;
+  color:var(--cream); line-height:1.6; margin-bottom:1.6rem;
+  padding-left:1.2rem; border-left:2px solid var(--amber);
+}
+.about-body { font-size:.93rem; color:var(--muted); line-height:1.85; margin-bottom:1.2rem; }
+.about-features { display:grid; grid-template-columns:1fr 1fr; gap:.6rem; margin-top:1.8rem; }
+.feature-tag {
+  display:flex; align-items:center; gap:.6rem; padding:.6rem .9rem;
+  border:1px solid var(--border);
+  font-size:.72rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--muted); transition:border-color .2s, color .2s;
+}
+.feature-tag:hover { border-color:var(--teal); color:var(--cream); }
+.feature-tag .icon { color:var(--teal); }
+.about-visual { position:relative; }
+.about-frame {
+  width:100%; aspect-ratio:3/4;
+  background:linear-gradient(145deg,var(--panel) 0%,var(--deep) 100%);
+  border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
+  transform:rotate(1.5deg);
+  box-shadow:12px 20px 60px rgba(0,0,0,.3);
+}
+.about-frame-text { text-align:center; padding:2.5rem; position:relative; z-index:1; }
+.about-frame-text blockquote {
+  font-family:'DM Serif Display',serif; font-size:1.2rem; font-style:italic;
+  color:var(--cream); line-height:1.6;
+}
+.about-frame-text cite {
+  display:block; margin-top:1rem;
+  font-family:'Raleway',sans-serif; font-size:.68rem; font-weight:700;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--teal);
+}
+.about-badge-float {
+  position:absolute; bottom:-1.2rem; left:-1.2rem;
+  width:95px; height:95px; background:var(--rose);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  color:var(--cream); border-radius:2px;
+  box-shadow:0 8px 24px rgba(143,105,99,.3); transform:rotate(-1.5deg);
+}
+.about-badge-float .big-num { font-family:'DM Serif Display',serif; font-size:1.7rem; line-height:1; }
+.about-badge-float .small-txt { font-size:.56rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; text-align:center; line-height:1.3; }
+
+.menu-preview { padding:9rem 0; border-top:1px solid var(--border); background:linear-gradient(to bottom,transparent,rgba(8,18,21,.4),transparent); }
+.menu-preview-head { margin-bottom:4rem; }
+.menu-preview-layout { display:grid; grid-template-columns:190px 1fr; gap:3rem; align-items:start; }
+.menu-tabs-side { display:flex; flex-direction:column; border:1px solid var(--border); position:sticky; top:90px; }
+.menu-tab-side {
+  font-family:'Raleway',sans-serif; font-size:.72rem; font-weight:700;
+  letter-spacing:.16em; text-transform:uppercase;
+  background:transparent; color:var(--muted);
+  border:none; border-bottom:1px solid var(--border);
+  padding:.9rem 1.1rem; cursor:pointer; text-align:left;
+  transition:background .2s, color .2s;
+}
+.menu-tab-side:last-child { border-bottom:none; }
+.menu-tab-side.active { background:var(--teal); color:var(--ink); }
+.menu-tab-side:hover:not(.active) { background:var(--teal-dim); color:var(--cream); }
+.menu-tabs-top { display:none; gap:0; margin-bottom:2rem; border:1px solid var(--border); width:fit-content; }
+.menu-tab-top {
+  font-family:'Raleway',sans-serif; font-size:.72rem; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase;
+  background:transparent; color:var(--muted); border:none;
+  border-right:1px solid var(--border); padding:.8rem 1.2rem; cursor:pointer;
+  transition:background .2s, color .2s;
+}
+.menu-tab-top:last-child { border-right:none; }
+.menu-tab-top.active { background:var(--teal); color:var(--ink); }
+.menu-preview-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+  background:var(--border); border:1px solid var(--border);
+}
+.menu-item {
+  background:var(--panel); padding:1.8rem 1.6rem;
+  transition:background .25s; position:relative; overflow:hidden;
+}
+.menu-item::after {
+  content:''; position:absolute; bottom:0; left:0; right:0;
+  height:2px; background:var(--teal); opacity:0; transition:opacity .2s;
+}
+.menu-item:hover { background:var(--panel-lt); }
+.menu-item:hover::after { opacity:1; }
+.menu-item-cat { font-family:'Raleway',sans-serif; font-size:.6rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--teal); margin-bottom:.5rem; display:block; }
+.menu-item-name { font-family:'DM Serif Display',serif; font-size:1.15rem; color:var(--cream); margin-bottom:.35rem; }
+.menu-item-desc { font-size:.83rem; color:var(--muted); line-height:1.6; }
+.menu-item-price { margin-top:1rem; font-family:'DM Serif Display',serif; font-size:.98rem; color:var(--amber); display:flex; align-items:baseline; gap:.4rem; }
+.menu-item-price .from { font-family:'Raleway',sans-serif; font-size:.65rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+.menu-special-tag { position:absolute; top:.7rem; right:.7rem; font-family:'Raleway',sans-serif; font-size:.58rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; background:var(--rose); color:var(--cream); padding:.22rem .55rem; }
+
+.stats-band { background:var(--teal); padding:4.5rem 0; position:relative; z-index:1; }
+.stats-band-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid rgba(255,255,255,.15); }
+.stat-item { padding:2.5rem 1.8rem; text-align:center; border-right:1px solid rgba(255,255,255,.15); }
+.stat-item:last-child { border-right:none; }
+.stat-num { font-family:'DM Serif Display',serif; font-size:2.8rem; color:var(--ink); line-height:1; display:block; margin-bottom:.3rem; }
+.stat-label { font-family:'Raleway',sans-serif; font-size:.68rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--ink); opacity:.65; display:block; margin-bottom:.25rem; }
+.stat-desc { font-size:.78rem; color:var(--ink); opacity:.5; line-height:1.5; }
+
+.reviews-section { padding:9rem 0; border-top:1px solid var(--border); }
+.reviews-head { margin-bottom:4rem; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:1rem; }
+.reviews-masonry { columns:3; gap:1.5rem; column-fill:balance; }
+.review-card {
+  break-inside:avoid; background:var(--panel); border:1px solid var(--border);
+  padding:1.7rem; margin-bottom:1.5rem; position:relative; overflow:hidden;
+  transition:border-color .2s;
+}
+.review-card:hover { border-color:rgba(104,174,186,.35); }
+.review-card::before {
+  content:'\201C'; font-family:'DM Serif Display',serif;
+  font-size:4rem; line-height:.6; font-style:italic;
+  color:var(--teal); opacity:.1;
+  position:absolute; top:.9rem; left:1.1rem;
+}
+.review-stars { color:var(--amber); font-size:.82rem; letter-spacing:.1em; margin-bottom:.65rem; }
+.review-text { font-size:.88rem; font-style:italic; color:var(--warm); line-height:1.65; margin-bottom:1.1rem; }
+.review-author { font-family:'Raleway',sans-serif; font-size:.68rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
+.reviews-cta { text-align:center; margin-top:3rem; }
+
+.location-section { padding:9rem 0; border-top:1px solid var(--border); }
+.location-split { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start; }
+.location-map-block { border:1px solid var(--border); overflow:hidden; position:relative; aspect-ratio:1; background:var(--deep); }
+.location-map-block iframe { position:absolute; inset:0; width:100%; height:100%; border:0; display:block; filter:saturate(.65) contrast(1.05) brightness(.82) hue-rotate(160deg); }
+.location-map-link {
+  position:absolute; bottom:1rem; right:1rem; z-index:2;
+  font-family:'Raleway',sans-serif; font-size:.65rem; font-weight:700;
+  letter-spacing:.15em; text-transform:uppercase; color:var(--teal); text-decoration:none;
+  background:rgba(8,18,21,.9); border:1px solid var(--border);
+  padding:.48rem 1.1rem; backdrop-filter:blur(8px); transition:border-color .2s;
+}
+.location-map-link:hover { border-color:var(--teal); }
+.info-block { margin-bottom:2.2rem; padding-bottom:2.2rem; border-bottom:1px solid var(--border-s); }
+.info-block:last-child { border-bottom:none; margin-bottom:0; }
+.info-label { font-family:'Raleway',sans-serif; font-size:.65rem; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--teal); margin-bottom:.65rem; display:block; }
+.info-value { font-family:'DM Serif Display',serif; font-size:1.1rem; color:var(--cream); line-height:1.5; }
+.info-sub { font-size:.85rem; color:var(--muted); margin-top:.35rem; }
+.hours-row { display:flex; justify-content:space-between; align-items:center; font-size:.88rem; color:var(--cream); padding:.38rem 0; border-bottom:1px solid rgba(104,174,186,.06); }
+.hours-row:last-child { border-bottom:none; }
+.hours-row .day { color:var(--muted); }
+.hours-row.today, .hours-row.today .day { color:var(--amber); }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <ul class="nav-left">
+    <li class="nav-links-item"><a href="#about">Storia</a></li>
+    <li class="nav-links-item"><a href="raminel-menu.html">Menu</a></li>
+  </ul>
+  <a href="index.html" class="nav-logo">El <em>Raminel</em></a>
+  <ul class="nav-right">
+    <li class="nav-links-item"><a href="raminel-recensioni.html">Recensioni</a></li>
+    <li class="nav-links-item"><a href="raminel-dove-siamo.html">Dove siamo</a></li>
+    <li><a href="tel:+390464" class="nav-cta">Prenota</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Apri menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<ul class="nav-mobile-menu" id="mobileMenu">
+  <li><a href="#about">Storia</a></li>
+  <li><a href="raminel-menu.html">Menu</a></li>
+  <li><a href="raminel-recensioni.html">Recensioni</a></li>
+  <li><a href="raminel-dove-siamo.html">Dove siamo</a></li>
+  <a href="tel:+390464" class="nav-mobile-cta">Prenota un tavolo</a>
+</ul>
+
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Corso Bettini · Rovereto</p>
+    <h1 class="hero-title">Cucina<em>autentica.</em><span>Rovereto</span></h1>
+    <p class="hero-sub">Pizza artigianale, cucina trentina e pasta fatta in casa — in uno dei locali più amati del centro storico.</p>
+    <div class="hero-actions">
+      <a href="raminel-menu.html" class="btn-primary">Scopri il menu</a>
+      <a href="raminel-dove-siamo.html" class="btn-outline">Vieni a trovarci</a>
+    </div>
+    <div class="hero-badge">
+      <span class="hero-badge-stars">★★★★</span>
+      <div class="hero-badge-sep"></div>
+      <span class="hero-badge-text">601 recensioni Google · 4,0</span>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-deco-bg">El</div>
+    <div class="hero-deco">
+      <blockquote class="hero-quote">
+        "Cibo eccellente, personale rapido e gentile. Ubicato in una delle vie più belle di Rovereto, Corso Bettini — la via della cultura."
+        <cite class="hero-quote-author">— Andrea Tettamanti · Local Guide</cite>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-content reveal">
+        <span class="section-eyebrow">La nostra storia</span>
+        <h2 class="section-title">Tradizione e cucina <em>sincera</em></h2>
+        <p class="about-intro">"Ottimo ristorante in posizione ottima, personale molto gentile, cibo buono."</p>
+        <p class="about-body">In Corso Bettini, a due passi dal MART e dal cuore di Rovereto, El Raminel è diventato nel tempo un punto di riferimento per chi cerca autenticità a tavola. Pizza sottile e croccante, pasta fatta in casa, carne salada trentina e i sapori del territorio — serviti in un ambiente moderno e accogliente.</p>
+        <p class="about-body">La cucina cambia con le stagioni, i prodotti vengono scelti con cura, e il team accoglie ogni ospite con la gentilezza e la semplicità che si riconoscono in pochi posti.</p>
+        <div class="about-features">
+          <div class="feature-tag"><span class="icon">🍕</span>Pizza artigianale</div>
+          <div class="feature-tag"><span class="icon">🌾</span>Pasta fatta in casa</div>
+          <div class="feature-tag"><span class="icon">🥩</span>Cucina trentina</div>
+          <div class="feature-tag"><span class="icon">☀️</span>Tavoli all'aperto</div>
+          <div class="feature-tag"><span class="icon">🍷</span>Vini locali</div>
+          <div class="feature-tag"><span class="icon">🐾</span>Pet friendly</div>
+        </div>
+      </div>
+      <div class="about-visual reveal">
+        <div class="about-frame">
+          <div class="about-frame-text">
+            <blockquote>"Ottima pizza, soprattutto quella con impasto integrale. La crostata ai mirtilli fatta in casa era davvero buona. Devo tornarci qualche volta."</blockquote>
+            <cite>— Stefano Linguanotto · Local Guide</cite>
+          </div>
+        </div>
+        <div class="about-badge-float">
+          <span class="big-num">601</span>
+          <span class="small-txt">recensioni</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="menu-preview" id="menu">
+  <div class="container">
+    <div class="menu-preview-head reveal">
+      <span class="section-eyebrow">Il menu</span>
+      <h2 class="section-title">Pizza, cucina, <em>tradizione</em></h2>
+      <p class="section-body">Dalla pizza sottile e croccante ai piatti della cucina trentina — pasta fatta in casa, carne salada, risotti e molto altro.</p>
+    </div>
+    <div class="menu-preview-layout reveal">
+      <div class="menu-tabs-side">
+        <button class="menu-tab-side active" data-cat="pizza">🍕 Pizza</button>
+        <button class="menu-tab-side" data-cat="antipasti">🫒 Antipasti</button>
+        <button class="menu-tab-side" data-cat="primi">🍝 Primi</button>
+        <button class="menu-tab-side" data-cat="secondi">🥩 Secondi</button>
+        <button class="menu-tab-side" data-cat="dolci">🍮 Dolci</button>
+      </div>
+      <div>
+        <div class="menu-tabs-top" id="menuTabsTop">
+          <button class="menu-tab-top active" data-cat="pizza">Pizza</button>
+          <button class="menu-tab-top" data-cat="antipasti">Antipasti</button>
+          <button class="menu-tab-top" data-cat="primi">Primi</button>
+          <button class="menu-tab-top" data-cat="secondi">Secondi</button>
+          <button class="menu-tab-top" data-cat="dolci">Dolci</button>
+        </div>
+        <div class="menu-preview-grid" id="menuPreviewGrid">
+          <div class="menu-item" data-cat="pizza"><span class="menu-item-cat">Pizza</span><div class="menu-item-name">Margherita</div><div class="menu-item-desc">Pomodoro, fior di latte, basilico fresco, olio EVO.</div><div class="menu-item-price"><span class="from">da</span>€ 7,00</div></div>
+          <div class="menu-item" data-cat="pizza"><span class="menu-special-tag">Signature</span><span class="menu-item-cat">Pizza</span><div class="menu-item-name">Re Sole</div><div class="menu-item-desc">La pizza signature del Raminel — ingredienti selezionati, impasto croccante e leggero.</div><div class="menu-item-price"><span class="from">da</span>€ 10,00</div></div>
+          <div class="menu-item" data-cat="pizza"><span class="menu-item-cat">Pizza</span><div class="menu-item-name">Burrata e Crudo</div><div class="menu-item-desc">Burrata fresca, prosciutto crudo, pomodorini, rucola e olio EVO.</div><div class="menu-item-price"><span class="from">da</span>€ 11,00</div></div>
+          <div class="menu-item" data-cat="pizza"><span class="menu-item-cat">Pizza</span><div class="menu-item-name">Pancetta e Patate</div><div class="menu-item-desc">Pancetta croccante, patate a fettine, rosmarino, fior di latte.</div><div class="menu-item-price"><span class="from">da</span>€ 9,00</div></div>
+          <div class="menu-item" data-cat="pizza"><span class="menu-item-cat">Pizza · Integrale</span><div class="menu-item-name">Speck &amp; Gorgonzola</div><div class="menu-item-desc">Speck Alto Adige, gorgonzola dolce, noci e miele di montagna.</div><div class="menu-item-price"><span class="from">da</span>€ 10,00</div></div>
+          <div class="menu-item" data-cat="pizza"><span class="menu-item-cat">Pizza</span><div class="menu-item-name">Quattro Formaggi</div><div class="menu-item-desc">Fior di latte, gorgonzola, asiago trentino, grana padano.</div><div class="menu-item-price"><span class="from">da</span>€ 9,00</div></div>
+
+          <div class="menu-item" data-cat="antipasti"><span class="menu-special-tag">Del territorio</span><span class="menu-item-cat">Antipasto</span><div class="menu-item-name">Carne Salada Trentina</div><div class="menu-item-desc">Affettata finemente con fagioli bianchi, olio EVO e rucola fresca.</div><div class="menu-item-price">€ 10,00</div></div>
+          <div class="menu-item" data-cat="antipasti"><span class="menu-item-cat">Antipasto</span><div class="menu-item-name">Carpaccio di Manzo</div><div class="menu-item-desc">Con scaglie di grana, rucola selvatica e limone.</div><div class="menu-item-price">€ 12,00</div></div>
+          <div class="menu-item" data-cat="antipasti"><span class="menu-item-cat">Antipasto</span><div class="menu-item-name">Verdure Grigliate</div><div class="menu-item-desc">Selezione stagionale con olio aromatico e erbe del Trentino.</div><div class="menu-item-price">€ 9,00</div></div>
+          <div class="menu-item" data-cat="antipasti"><span class="menu-item-cat">Antipasto · Mare</span><div class="menu-item-name">Pepata di Cozze</div><div class="menu-item-desc">Cozze fresche in brodetto di pomodoro e pepe nero. Ottima, genuina.</div><div class="menu-item-price">€ 11,00</div></div>
+          <div class="menu-item" data-cat="antipasti"><span class="menu-item-cat">Antipasto</span><div class="menu-item-name">Insalatona El Raminel</div><div class="menu-item-desc">Insalata mista abbondante con ingredienti freschi di stagione.</div><div class="menu-item-price">€ 8,00</div></div>
+          <div class="menu-item" data-cat="antipasti"><span class="menu-item-cat">Antipasto</span><div class="menu-item-name">Tomino Caldo</div><div class="menu-item-desc">Tomino gratinato con miele, noci e pane tostato.</div><div class="menu-item-price">€ 9,00</div></div>
+
+          <div class="menu-item" data-cat="primi"><span class="menu-special-tag">Signature</span><span class="menu-item-cat">Primo · Mare</span><div class="menu-item-name">Spaghetti allo Scoglio</div><div class="menu-item-desc">Pasta fresca con frutti di mare, pomodorini, aglio e prezzemolo.</div><div class="menu-item-price">€ 15,00</div></div>
+          <div class="menu-item" data-cat="primi"><span class="menu-item-cat">Primo · Terra</span><div class="menu-item-name">Tagliatelle al Ragù di Cinghiale</div><div class="menu-item-desc">Pasta fatta in casa al ragù di cinghiale trentino — lenta cottura.</div><div class="menu-item-price">€ 14,00</div></div>
+          <div class="menu-item" data-cat="primi"><span class="menu-item-cat">Primo · Trentino</span><div class="menu-item-name">Canederli</div><div class="menu-item-desc">Canederli allo speck in brodo o asciutti. Tradizione trentina.</div><div class="menu-item-price">€ 12,00</div></div>
+          <div class="menu-item" data-cat="primi"><span class="menu-item-cat">Primo</span><div class="menu-item-name">Risotto ai Funghi</div><div class="menu-item-desc">Cremoso con funghi porcini e riduzione di vino bianco trentino.</div><div class="menu-item-price">€ 13,00</div></div>
+          <div class="menu-item" data-cat="primi"><span class="menu-item-cat">Primo · Trentino</span><div class="menu-item-name">Risotto Mirtilli &amp; Burrata</div><div class="menu-item-desc">Risotto ai mirtilli neri con burrata pugliese. Abbinamento sorprendente.</div><div class="menu-item-price">€ 14,00</div></div>
+          <div class="menu-item" data-cat="primi"><span class="menu-item-cat">Primo · Trentino</span><div class="menu-item-name">Spätzle</div><div class="menu-item-desc">Spätzle trentini con burro, speck e salvia — delicati e avvolgenti.</div><div class="menu-item-price">€ 12,00</div></div>
+
+          <div class="menu-item" data-cat="secondi"><span class="menu-item-cat">Secondo · Terra</span><div class="menu-item-name">Coniglio in Umido</div><div class="menu-item-desc">Coniglio trentino in umido con erbe aromatiche e polenta.</div><div class="menu-item-price">€ 16,00</div></div>
+          <div class="menu-item" data-cat="secondi"><span class="menu-item-cat">Secondo</span><div class="menu-item-name">Tagliata di Manzo</div><div class="menu-item-desc">Con rucola, scaglie di grana e olio EVO. Cotta al punto giusto.</div><div class="menu-item-price">€ 18,00</div></div>
+          <div class="menu-item" data-cat="secondi"><span class="menu-item-cat">Secondo · Trentino</span><div class="menu-item-name">Guancia di Maiale Brasata</div><div class="menu-item-desc">Brasata lentamente con purè di sedano rapa. Un secondo da antologia.</div><div class="menu-item-price">€ 17,00</div></div>
+          <div class="menu-item" data-cat="secondi"><span class="menu-item-cat">Secondo · Mare</span><div class="menu-item-name">Branzino al Forno</div><div class="menu-item-desc">Intero al forno con erbe aromatiche e verdure di stagione.</div><div class="menu-item-price">€ 19,00</div></div>
+          <div class="menu-item" data-cat="secondi"><span class="menu-item-cat">Secondo</span><div class="menu-item-name">Costine alla Brace</div><div class="menu-item-desc">Alla brace con salsa BBQ trentina e crauti caramellati.</div><div class="menu-item-price">€ 16,00</div></div>
+          <div class="menu-item" data-cat="secondi"><span class="menu-item-cat">Secondo · Trentino</span><div class="menu-item-name">Ragù di Cervo</div><div class="menu-item-desc">Con polenta e mirtilli rossi. I sapori profondi della montagna.</div><div class="menu-item-price">€ 18,00</div></div>
+
+          <div class="menu-item" data-cat="dolci"><span class="menu-special-tag">Top</span><span class="menu-item-cat">Dolce</span><div class="menu-item-name">Tiramisù Fatto in Casa</div><div class="menu-item-desc">"Il miglior tiramisù che abbia mai assaggiato — ci sono tornata solo per questo."</div><div class="menu-item-price">€ 6,00</div></div>
+          <div class="menu-item" data-cat="dolci"><span class="menu-item-cat">Dolce</span><div class="menu-item-name">Crème Brûlée</div><div class="menu-item-desc">Aromatizzata alla cannella con semi di papavero. Superlativa.</div><div class="menu-item-price">€ 6,00</div></div>
+          <div class="menu-item" data-cat="dolci"><span class="menu-item-cat">Dolce · Fatto in casa</span><div class="menu-item-name">Crostata ai Mirtilli</div><div class="menu-item-desc">Fatta in casa con marmellata di mirtilli del Trentino.</div><div class="menu-item-price">€ 5,00</div></div>
+          <div class="menu-item" data-cat="dolci"><span class="menu-item-cat">Dolce</span><div class="menu-item-name">Semifreddo alla Cannella</div><div class="menu-item-desc">Con semi di papavero. Artigianale, delicato, stagionale.</div><div class="menu-item-price">€ 6,00</div></div>
+          <div class="menu-item" data-cat="dolci"><span class="menu-item-cat">Dolce</span><div class="menu-item-name">Biscottini della Casa</div><div class="menu-item-desc">Artigianali con il caffè. Un piccolo regalo di fine pasto.</div><div class="menu-item-price">€ 3,00</div></div>
+          <div class="menu-item" data-cat="dolci"><span class="menu-item-cat">Dolce · Stagionale</span><div class="menu-item-name">Dolce del Giorno</div><div class="menu-item-desc">Creazione quotidiana della cucina con prodotti stagionali.</div><div class="menu-item-price">€ 6,00</div></div>
+        </div>
+        <div style="text-align:center;margin-top:2.2rem;">
+          <a href="raminel-menu.html" class="btn-teal">Menu completo →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats-band">
+  <div class="container">
+    <div class="stats-band-grid">
+      <div class="stat-item"><span class="stat-num">601</span><span class="stat-label">Recensioni Google</span><div class="stat-desc">4,0 stelle di media.</div></div>
+      <div class="stat-item"><span class="stat-num">3+</span><span class="stat-label">Impasti pizza</span><div class="stat-desc">Classico, integrale, ai semi.</div></div>
+      <div class="stat-item"><span class="stat-num">2'</span><span class="stat-label">Dal MART</span><div class="stat-desc">In Corso Bettini, centro storico.</div></div>
+      <div class="stat-item"><span class="stat-num">1</span><span class="stat-label">Passione autentica</span><div class="stat-desc">Cucina sincera, prodotti del territorio.</div></div>
+    </div>
+  </div>
+</div>
+
+<section class="reviews-section" id="reviews">
+  <div class="container">
+    <div class="reviews-head reveal">
+      <div>
+        <span class="section-eyebrow">Cosa dicono di noi</span>
+        <h2 class="section-title">Parole dai <em>nostri ospiti</em></h2>
+      </div>
+      <a href="raminel-recensioni.html" class="btn-outline">Tutte le 601 recensioni →</a>
+    </div>
+    <div class="reviews-masonry reveal">
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Cibo eccellente, bene anche il servizio per bimbi di varie età. Personale rapido e gentile. Ubicato in una delle vie più belle di Rovereto, Corso Bettini, la via della cultura."</p><span class="review-author">Andrea Tettamanti · Local Guide</span></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Un posto trovato quasi per caso, cercavamo una pizzeria in centro a Rovereto. È stata una bella scoperta. L'ambiente è bellissimo, moderno, curato, giovanile. Personale gentile e cordiale."</p><span class="review-author">Veronica Bensi · Local Guide</span></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"The Atmosphere was great vibe, and the pizza was delicious. I had the best Tiramisu ever. I wish to steal the recipe!! I went there a second time only for the Tiramisu. Love, love."</p><span class="review-author">Yoyo Is Here · Local Guide</span></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Mangiato benissimo! Non scorderò il purè di sedano rapa in abbinamento alla guancia di maiale brasata. Sono tornata e ho scelto le tagliatelle al ragù di cinghiale: ottime! E i dessert erano tutti eccellenti."</p><span class="review-author">Corona Perer · Local Guide · 1195 rec.</span></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Outstanding pizza! We had the beef carpaccio as appetizer and the four cheese pizza. Both were outstanding. The best pizza crust we have had in Italy. The host recommended wine from the region."</p><span class="review-author">Victor Gurel · Local Guide</span></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Ottima pizza, soprattutto quella con impasto integrale — si sposava benissimo con pancetta e patate. La crostata ai mirtilli fatta in casa era davvero buona. Devo tornarci qualche volta."</p><span class="review-author">Stefano Linguanotto · Local Guide</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="location-section" id="location">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:4rem;">
+      <span class="section-eyebrow">Dove siamo</span>
+      <h2 class="section-title">Nel cuore di <em>Rovereto</em></h2>
+    </div>
+    <div class="location-split">
+      <div class="location-map-block reveal">
+        <iframe src="https://maps.google.com/maps?q=El+Raminel+Rovereto+Corso+Bettini&output=embed&z=16" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" title="El Raminel"></iframe>
+        <a href="https://maps.google.com/?q=El+Raminel+Rovereto" target="_blank" class="location-map-link">Apri in Maps →</a>
+      </div>
+      <div class="reveal" style="padding-top:.5rem;">
+        <div class="info-block">
+          <span class="info-label">Indirizzo</span>
+          <div class="info-value">Corso Bettini<br>38068 Rovereto (TN)</div>
+          <div class="info-sub">A 2 minuti dal MART · Centro storico</div>
+        </div>
+        <div class="info-block">
+          <span class="info-label">Orari</span>
+          <div class="hours-row"><span class="day">Lunedì – Venerdì</span><span class="time">12:00–14:30 · 19:00–22:00</span></div>
+          <div class="hours-row"><span class="day">Sabato</span><span class="time">12:00–14:30 · 19:00–22:30</span></div>
+          <div class="hours-row"><span class="day">Domenica</span><span class="time">12:00–14:30 · 19:00–22:00</span></div>
+        </div>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.5rem;">
+          <a href="tel:+390464" class="btn-primary">Prenota un tavolo</a>
+          <a href="raminel-dove-siamo.html" class="btn-outline">Come raggiungerci →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">El <em>Raminel</em></div>
+      <div class="footer-tagline">Ristorante Pizzeria nel cuore di Rovereto<br>Corso Bettini · Trentino</div>
+    </div>
+    <div>
+      <span class="footer-col-title">Pagine</span>
+      <ul class="footer-links">
+        <li><a href="#about">La nostra storia</a></li>
+        <li><a href="raminel-menu.html">Menu completo</a></li>
+        <li><a href="raminel-recensioni.html">Recensioni</a></li>
+        <li><a href="raminel-dove-siamo.html">Dove siamo</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="footer-col-title">Contatti</span>
+      <div class="footer-address">Corso Bettini, 38068 Rovereto (TN)<br><br>Lun–Ven: 12:00–14:30 · 19:00–22:00<br>Sab: 12:00–14:30 · 19:00–22:30<br>Dom: 12:00–14:30 · 19:00–22:00</div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 El Raminel · Rovereto (TN)</div>
+    <div class="footer-copy">4,0 ★ · 601 recensioni Google</div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+
+  document.getElementById('navHamburger').addEventListener('click', function() {
+    const open = nav.classList.toggle('nav-open');
+    this.setAttribute('aria-expanded', open);
+  });
+  document.addEventListener('click', e => { if (!nav.contains(e.target)) nav.classList.remove('nav-open'); });
+
+  function handleHash() {
+    const hash = window.location.hash; if(!hash) return;
+    const t = document.querySelector(hash); if(!t) return;
+    t.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+    document.querySelectorAll('.reveal').forEach(el => { if(el.getBoundingClientRect().top < window.innerHeight*1.5) el.classList.add('visible'); });
+    setTimeout(() => t.scrollIntoView({behavior:'smooth',block:'start'}), 60);
+  }
+  handleHash(); window.addEventListener('load', handleHash);
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting) {
+        const siblings = [...e.target.parentElement.querySelectorAll('.reveal')];
+        e.target.style.transitionDelay = `${siblings.indexOf(e.target) * 0.1}s`;
+        e.target.classList.add('visible'); observer.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  const menuItems = document.querySelectorAll('#menuPreviewGrid .menu-item');
+  function filterMenuPreview(cat) { menuItems.forEach(i => { i.style.display = i.dataset.cat === cat ? '' : 'none'; }); }
+  filterMenuPreview('pizza');
+  document.querySelectorAll('.menu-tab-side, .menu-tab-top').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.menu-tab-side, .menu-tab-top').forEach(b => b.classList.toggle('active', b.dataset.cat === btn.dataset.cat));
+      filterMenuPreview(btn.dataset.cat);
+    });
+  });
+</script>
+</body>
+</html>
