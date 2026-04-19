@@ -97,6 +97,95 @@
 .poi-name { font-family:'DM Serif Display',serif; font-size:.98rem; font-weight:400; color:var(--cream); margin-bottom:.3rem; }
 .poi-desc { font-size:.82rem; color:var(--muted); line-height:1.45; }
 .poi-dist { margin-top:.65rem; font-family:'Raleway',sans-serif; font-size:.65rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--teal); opacity:.75; }
+
+/* ── BOOKING MODAL ─────────────────────────────────── */
+.modal-overlay {
+  position:fixed; inset:0; z-index:500;
+  background:rgba(8,18,21,.88); backdrop-filter:blur(6px);
+  display:flex; align-items:center; justify-content:center;
+  padding:1.2rem;
+  opacity:0; pointer-events:none;
+  transition:opacity .3s ease;
+}
+.modal-overlay.open { opacity:1; pointer-events:all; }
+.modal-box {
+  width:100%; max-width:520px;
+  background:var(--charcoal); border:1px solid var(--border);
+  padding:2.8rem 2.6rem 2.4rem; position:relative;
+  transform:translateY(16px); transition:transform .3s ease;
+  max-height:90vh; overflow-y:auto;
+}
+.modal-overlay.open .modal-box { transform:translateY(0); }
+.modal-close {
+  position:absolute; top:1rem; right:1.2rem;
+  background:none; border:none; color:var(--muted);
+  font-size:1.4rem; cursor:pointer; line-height:1; transition:color .2s;
+}
+.modal-close:hover { color:var(--cream); }
+.modal-eyebrow {
+  font-size:.68rem; letter-spacing:.35em; text-transform:uppercase;
+  color:var(--teal); margin-bottom:.6rem; display:block;
+}
+.modal-title {
+  font-family:'DM Serif Display', serif;
+  font-size:1.9rem; font-weight:400; color:var(--cream);
+  line-height:1.1; margin-bottom:1.8rem;
+}
+.modal-title em { font-style:italic; color:var(--amber); }
+.bk-form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.bk-form-group { margin-bottom:1.1rem; }
+.bk-form-group label {
+  display:block; font-size:.68rem; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--teal); margin-bottom:.4rem;
+}
+.bk-form-group input,
+.bk-form-group select,
+.bk-form-group textarea {
+  width:100%; font-family:'Raleway',sans-serif; font-size:.95rem;
+  background:rgba(14,28,32,.9); border:1px solid var(--border);
+  color:var(--cream); padding:.7rem .9rem; outline:none;
+  transition:border-color .2s; appearance:none;
+}
+.bk-form-group select {
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236a9098'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right .8rem center; padding-right:2rem; cursor:pointer;
+}
+.bk-form-group input:focus,
+.bk-form-group select:focus,
+.bk-form-group textarea:focus { border-color:rgba(104,174,186,.55); }
+.bk-form-group input::placeholder,
+.bk-form-group textarea::placeholder { color:var(--muted); font-style:italic; }
+.bk-form-group textarea { resize:vertical; min-height:80px; }
+.form-submit {
+  width:100%; margin-top:.6rem;
+  font-family:'Raleway',sans-serif;
+  font-size:.82rem; letter-spacing:.2em; text-transform:uppercase; font-weight:700;
+  background:var(--amber); color:var(--ink);
+  border:none; padding:.95rem; cursor:pointer;
+  transition:background .2s, opacity .2s;
+}
+.form-submit:hover:not(:disabled) { background:var(--amber-lt); }
+.form-submit:disabled { opacity:.55; cursor:not-allowed; }
+.form-error {
+  margin-top:.8rem; padding:.65rem .9rem;
+  background:rgba(140,46,34,.18); border:1px solid rgba(200,80,60,.3);
+  color:#e08080; font-size:.88rem; font-style:italic; display:none;
+}
+.form-error.show { display:block; }
+.toast-booking {
+  position:fixed; bottom:1.6rem; right:1.6rem; z-index:9999;
+  padding:1rem 1.5rem; max-width:340px;
+  background:#1a3828; border:1px solid #3a6040; color:#8fd898;
+  font-family:'Raleway',sans-serif; font-size:.9rem;
+  box-shadow:0 8px 32px rgba(0,0,0,.5);
+  transform:translateY(12px); opacity:0;
+  transition:opacity .35s ease, transform .35s ease; pointer-events:none;
+}
+.toast-booking.show { opacity:1; transform:translateY(0); }
+@media(max-width:600px){
+  .modal-box { padding:2rem 1.4rem 1.8rem; }
+  .bk-form-row { grid-template-columns:1fr; }
+}
 </style>
 </head>
 <body>
@@ -109,7 +198,7 @@
   <div class="nav-links nav-links-right">
     <a href="raminel-dove-siamo.html" class="active">Dove siamo</a>
     <a href="raminel-asporto.html">Asporto</a>
-    <a href="raminel-dove-siamo.html" class="nav-cta">Prenota</a>
+    <a href="index.html" class="nav-cta">Home</a>
   </div>
   <button class="nav-hamburger" id="navHamburger" aria-label="Apri menu" aria-expanded="false">
     <span></span><span></span><span></span>
@@ -118,7 +207,7 @@
     <a href="index.html#about">Storia</a>
     <a href="raminel-dove-siamo.html" class="active">Dove siamo</a>
     <a href="raminel-asporto.html">Asporto</a>
-    <a href="raminel-dove-siamo.html" class="nav-mobile-cta">Prenota un tavolo</a>
+    <a href="index.html" class="nav-mobile-cta">Home</a>
   </div>
 </nav>
 
@@ -218,7 +307,7 @@
     </div>
 
     <div class="cta-row">
-      <a href="tel:+390464" class="btn-primary">Chiama per prenotare</a>
+      <button class="btn-primary" id="openBooking">Prenota un tavolo</button>
       <a href="https://maps.google.com/?q=El+Raminel+Rovereto" target="_blank" class="btn-outline">Indicazioni stradali</a>
       <a href="raminel-menu.html" class="btn-teal">Vedi il menu</a>
     </div>
@@ -292,5 +381,151 @@
   }, {threshold:.1});
   document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
 </script>
+
+<!-- BOOKING MODAL -->
+<div class="modal-overlay" id="bookingModal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <button class="modal-close" id="closeBooking" aria-label="Chiudi">✕</button>
+    <span class="modal-eyebrow">El Raminel · Rovereto</span>
+    <h2 class="modal-title">Prenota<em> il tuo tavolo</em></h2>
+    <div class="bk-form-row">
+      <div class="bk-form-group">
+        <label for="b-nome">Nome e cognome *</label>
+        <input type="text" id="b-nome" placeholder="Mario Rossi" required>
+      </div>
+      <div class="bk-form-group">
+        <label for="b-tel">Telefono *</label>
+        <input type="tel" id="b-tel" placeholder="333 123 4567" required>
+      </div>
+    </div>
+    <div class="bk-form-row">
+      <div class="bk-form-group">
+        <label for="b-data">Data *</label>
+        <input type="date" id="b-data" required>
+      </div>
+      <div class="bk-form-group">
+        <label for="b-ora">Orario *</label>
+        <select id="b-ora" required>
+          <option value="">— scegli —</option>
+        </select>
+      </div>
+    </div>
+    <div class="bk-form-group">
+      <label for="b-persone">Numero di persone *</label>
+      <select id="b-persone" required>
+        <option value="">— scegli —</option>
+        <option>1</option><option>2</option><option>3</option>
+        <option>4</option><option>5</option><option>6</option>
+        <option>7</option><option>8</option><option>9</option>
+        <option>10</option><option>11</option><option>12</option>
+      </select>
+    </div>
+    <div class="bk-form-group">
+      <label for="b-note">Note (opzionale)</label>
+      <textarea id="b-note" placeholder="Allergie, occasioni speciali, richieste particolari…"></textarea>
+    </div>
+    <div class="form-error" id="bookingError"></div>
+    <button class="form-submit" id="bookingSubmit">Invia prenotazione</button>
+  </div>
+</div>
+
+<!-- Toast conferma -->
+<div class="toast-booking" id="bookingToast">✓ Prenotazione ricevuta! Ti confermiamo al più presto.</div>
+
+<script type="module">
+  const SUPABASE_URL      = 'https://urdfwujrekisuylowqjc.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVyZGZ3dWpyZWtpc3V5bG93cWpjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMzQ0ODAsImV4cCI6MjA5MTkxMDQ4MH0.4jg_co4O8bkFMtx6y4jt7lPfQjFG6sgUMgZpDRdM3Xw';
+
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+  const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const ALL_SLOTS = ['12:00','12:30','13:00','13:30','14:00',
+                     '18:30','19:00','19:30','20:00','20:30','21:00','21:30'];
+
+  function populateSlots(dateVal) {
+    const sel = document.getElementById('b-ora');
+    sel.innerHTML = '<option value="">— scegli —</option>';
+    const today = new Date().toISOString().split('T')[0];
+    const now   = new Date();
+    ALL_SLOTS.forEach(slot => {
+      if (dateVal === today) {
+        const [h,m] = slot.split(':').map(Number);
+        const slotDate = new Date(); slotDate.setHours(h,m,0,0);
+        if (slotDate <= now) return;
+      }
+      const opt = document.createElement('option');
+      opt.value = opt.textContent = slot;
+      sel.appendChild(opt);
+    });
+  }
+
+  function setMinDate() {
+    const inp = document.getElementById('b-data');
+    const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+    inp.min = tomorrow.toISOString().split('T')[0];
+  }
+
+  document.getElementById('b-data').addEventListener('change', e => populateSlots(e.target.value));
+
+  const overlay = document.getElementById('bookingModal');
+
+  document.getElementById('openBooking').addEventListener('click', () => {
+    setMinDate(); populateSlots('');
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('closeBooking').addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  document.getElementById('bookingSubmit').addEventListener('click', async () => {
+    const nome    = document.getElementById('b-nome').value.trim();
+    const tel     = document.getElementById('b-tel').value.trim();
+    const data    = document.getElementById('b-data').value;
+    const ora     = document.getElementById('b-ora').value;
+    const persone = document.getElementById('b-persone').value;
+    const note    = document.getElementById('b-note').value.trim();
+    const errEl   = document.getElementById('bookingError');
+    const btn     = document.getElementById('bookingSubmit');
+
+    errEl.classList.remove('show');
+    if (!nome || !tel || !data || !ora || !persone) {
+      errEl.textContent = 'Compila tutti i campi obbligatori.';
+      errEl.classList.add('show'); return;
+    }
+
+    btn.disabled = true; btn.textContent = 'Invio in corso…';
+
+    const { error } = await sb.from('prenotazioni').insert({
+      nome, telefono: tel, data, ora,
+      persone: parseInt(persone),
+      note: note || null,
+      stato: 'in_attesa'
+    });
+
+    btn.disabled = false; btn.textContent = 'Invia prenotazione';
+
+    if (error) {
+      errEl.textContent = 'Errore durante l'invio. Riprova o chiamaci direttamente.';
+      errEl.classList.add('show');
+      console.error('Supabase error:', error); return;
+    }
+
+    closeModal();
+    ['b-nome','b-tel','b-data','b-persone','b-note'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    const toast = document.getElementById('bookingToast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4500);
+  });
+</script>
+
 </body>
 </html>
