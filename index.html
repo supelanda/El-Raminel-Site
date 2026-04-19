@@ -228,28 +228,6 @@
 .rev-stars { color:var(--amber); font-size:.8rem; letter-spacing:.1em; margin-bottom:.7rem; }
 .rev-text  { font-size:.88rem; font-style:italic; color:var(--warm); line-height:1.65; margin-bottom:1.1rem; }
 .rev-author { font-family:'Raleway',sans-serif; font-size:.67rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); }
-
-.location-section { padding:9rem 0; border-top:1px solid var(--border); }
-.location-split { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start; }
-.location-map-block { border:1px solid var(--border); overflow:hidden; position:relative; aspect-ratio:1; background:var(--deep); }
-.location-map-block iframe { position:absolute; inset:0; width:100%; height:100%; border:0; display:block; filter:saturate(.65) contrast(1.05) brightness(.82) hue-rotate(160deg); }
-.location-map-link {
-  position:absolute; bottom:1rem; right:1rem; z-index:2;
-  font-family:'Raleway',sans-serif; font-size:.65rem; font-weight:700;
-  letter-spacing:.15em; text-transform:uppercase; color:var(--teal); text-decoration:none;
-  background:rgba(8,18,21,.9); border:1px solid var(--border);
-  padding:.48rem 1.1rem; backdrop-filter:blur(8px); transition:border-color .2s;
-}
-.location-map-link:hover { border-color:var(--teal); }
-.info-block { margin-bottom:2.2rem; padding-bottom:2.2rem; border-bottom:1px solid var(--border-s); }
-.info-block:last-child { border-bottom:none; margin-bottom:0; }
-.info-label { font-family:'Raleway',sans-serif; font-size:.65rem; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--teal); margin-bottom:.65rem; display:block; }
-.info-value { font-family:'DM Serif Display',serif; font-size:1.1rem; color:var(--cream); line-height:1.5; }
-.info-sub { font-size:.85rem; color:var(--muted); margin-top:.35rem; }
-.hours-row { display:flex; justify-content:space-between; align-items:center; font-size:.88rem; color:var(--cream); padding:.38rem 0; border-bottom:1px solid rgba(104,174,186,.06); }
-.hours-row:last-child { border-bottom:none; }
-.hours-row .day { color:var(--muted); }
-.hours-row.today, .hours-row.today .day { color:var(--amber); }
 </style>
 </head>
 <body>
@@ -442,38 +420,6 @@
       <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Ottima pizza integrale con pancetta e patate. La crostata ai mirtilli fatta in casa era davvero buona. Devo tornarci."</p><span class="rev-author">Stefano Linguanotto · Local Guide</span></div>
       <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Eccellente sotto tutti i punti di vista — cortesia, servizio veloce, varietà del menù. Non abbiamo mai aspettato neanche con il locale pieno."</p><span class="rev-author">Emanuela Buonpane · Local Guide</span></div>
       <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Pizza fantastica, personale molto cordiale, locale impeccabile. Un punto di riferimento ogni volta che siamo a Rovereto."</p><span class="rev-author">Caterina Peschedasch · Local Guide</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="location-section" id="location">
-  <div class="container">
-    <div class="reveal" style="margin-bottom:4rem;">
-      <span class="section-eyebrow">Dove siamo</span>
-      <h2 class="section-title">Nel cuore di <em>Rovereto</em></h2>
-    </div>
-    <div class="location-split">
-      <div class="location-map-block reveal">
-        <iframe src="https://maps.google.com/maps?q=El+Raminel+Rovereto+Corso+Bettini&output=embed&z=16" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" title="El Raminel"></iframe>
-        <a href="https://maps.google.com/?q=El+Raminel+Rovereto" target="_blank" class="location-map-link">Apri in Maps →</a>
-      </div>
-      <div class="reveal" style="padding-top:.5rem;">
-        <div class="info-block">
-          <span class="info-label">Indirizzo</span>
-          <div class="info-value">Corso Bettini<br>38068 Rovereto (TN)</div>
-          <div class="info-sub">A 2 minuti dal MART · Centro storico</div>
-        </div>
-        <div class="info-block">
-          <span class="info-label">Orari</span>
-          <div class="hours-row"><span class="day">Lunedì – Venerdì</span><span class="time">12:00–14:30 · 19:00–22:00</span></div>
-          <div class="hours-row"><span class="day">Sabato</span><span class="time">12:00–14:30 · 19:00–22:30</span></div>
-          <div class="hours-row"><span class="day">Domenica</span><span class="time">12:00–14:30 · 19:00–22:00</span></div>
-        </div>
-        <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.5rem;">
-          <a href="tel:+390464" class="btn-primary">Prenota un tavolo</a>
-          <a href="raminel-dove-siamo.html" class="btn-outline">Come raggiungerci →</a>
-        </div>
-      </div>
     </div>
   </div>
 </section>
