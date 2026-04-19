@@ -504,15 +504,20 @@ async function loadWeek() {
     .select('*')
     .gte('data', from)
     .lte('data', to)
-    .order('data', { ascending: true })
-    .order('ora', { ascending: true });
+    .order('data', { ascending: true });
 
   if (error) {
+    console.error('[prenotazioni] Supabase error:', error);
     $('dayList').innerHTML = `<div class="loading-state" style="color:var(--red-lt)">Errore caricamento: ${error.message}</div>`;
     return;
   }
 
-  allBookings = data || [];
+  console.log('[prenotazioni] righe ricevute:', data?.length, data);
+  allBookings = (data || []).sort((a, b) => {
+    if (a.data < b.data) return -1;
+    if (a.data > b.data) return  1;
+    return (a.ora || '').localeCompare(b.ora || '');
+  });
   renderWeek(monday);
   updateStats();
 }
