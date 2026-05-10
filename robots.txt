@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /raminel-admin.html
+
+Sitemap: https://www.elraminel.it/sitemap.xml
