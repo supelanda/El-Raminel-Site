@@ -145,7 +145,7 @@
   .about-frame { aspect-ratio:3/2; }
 
   /* ── Menu preview (homepage) ── */
-  .menu-preview-grid { grid-template-columns:1fr 1fr !important; overflow:hidden; }
+  .menu-preview-grid { grid-template-columns:1fr !important; }
   .menu-tabs-top { flex-wrap:wrap; }
 
   /* ── Stats band ── */
@@ -154,31 +154,10 @@
   /* ── Reviews ── */
   .reviews-masonry { columns:1 !important; }
 
-
-  /* ── Menu preview cards: più compatte ── */
-  .menu-item { padding:1.1rem .9rem !important; }
-  .menu-item-name { font-size:.92rem !important; }
-  .menu-item-price { font-size:.8rem !important; }
-  .menu-item-cat { font-size:.58rem !important; }
-  .menu-preview-grid { overflow:hidden; }
-
   /* ── Menu page ── */
-  .menu-cards-grid { grid-template-columns:1fr 1fr !important; overflow:hidden; }
+  .menu-cards-grid { grid-template-columns:1fr !important; }
   .menu-cat-bar { overflow-x:auto; -webkit-overflow-scrolling:touch; }
   .menu-cat-btn { font-size:.72rem !important; padding:.85rem .9rem !important; white-space:nowrap; }
-  /* ── Pizza card compatta ── */
-  .card-inner { padding:1.1rem 1rem .9rem !important; }
-  .card-name { font-size:.92rem !important; }
-  .card-desc { display:none !important; }
-  .size-label { font-size:.62rem !important; }
-  .size-price { font-size:.82rem !important; }
-  .size-col { padding:.4rem .3rem !important; }
-  .card-footer { padding:.6rem .8rem !important; font-size:.7rem !important; }
-  .card-badge { font-size:.58rem !important; padding:.18rem .45rem !important; }
-  /* ── Previeni striscia orizzontale bianca ── */
-  .menu-preview, .menu-cards-area { max-width:100vw; overflow-x:hidden; }
-  .menu-preview-grid, .menu-cards-grid { max-width:100%; }
-
 
   /* ── Recensioni ── */
   .recens-grid { columns:1 !important; }
@@ -193,6 +172,69 @@
   .cta-row .btn-primary,
   .cta-row .btn-outline,
   .cta-row .btn-teal { text-align:center; }
+
+  /* ══ MENU PAGE — layout McDonald's ══════════════════════ */
+
+  /* Grid → lista verticale */
+  .menu-cards-grid {
+    display:flex !important; flex-direction:column !important;
+    gap:0 !important; background:transparent !important;
+    border:none !important; border-top:1px solid var(--border);
+    max-width:100%; overflow-x:hidden;
+  }
+
+  /* Ogni card = riga orizzontale compatta */
+  .pizza-card {
+    display:flex !important; flex-direction:row !important;
+    align-items:center !important; padding:0 !important;
+    border-bottom:1px solid var(--border-s) !important;
+    border-left:none !important; border-top:none !important; border-right:none !important;
+    min-height:60px !important; background:var(--charcoal) !important;
+  }
+  .pizza-card:hover { background:var(--panel) !important; }
+  .pizza-card::before { opacity:1 !important; width:3px !important; left:0 !important; }
+
+  /* Lato sinistro: testo */
+  .card-inner {
+    flex:1 !important; min-width:0 !important;
+    padding:.65rem .8rem .65rem .85rem !important;
+    display:flex !important; flex-direction:column !important;
+    justify-content:center !important; gap:.15rem !important;
+  }
+  .card-top { margin-bottom:.05rem !important; }
+  .card-badges { display:flex !important; gap:.3rem !important; flex-wrap:nowrap !important; }
+  .badge { font-size:.52rem !important; padding:.1rem .38rem !important; letter-spacing:.06em !important; }
+  .card-name {
+    font-size:.96rem !important; font-weight:600 !important;
+    white-space:nowrap !important; overflow:hidden !important;
+    text-overflow:ellipsis !important; margin-bottom:0 !important;
+  }
+  .card-desc {
+    display:block !important;
+    font-size:.74rem !important; color:var(--muted) !important;
+    white-space:nowrap !important; overflow:hidden !important;
+    text-overflow:ellipsis !important; margin-bottom:0 !important;
+    font-style:italic !important;
+  }
+  .card-doughs { display:none !important; }
+
+  /* Lato destro: solo prezzo Normale */
+  .card-footer {
+    flex-shrink:0 !important; display:flex !important;
+    flex-direction:column !important; align-items:flex-end !important;
+    justify-content:center !important;
+    padding:.65rem .9rem .65rem .3rem !important;
+    background:transparent !important; border-top:none !important;
+  }
+  .size-col:nth-child(1) { display:none !important; }
+  .size-col:nth-child(3) { display:none !important; }
+  .size-col:nth-child(2) {
+    display:flex !important; flex-direction:column !important; align-items:flex-end !important;
+  }
+  .size-name { font-size:.58rem !important; color:var(--muted) !important; text-transform:uppercase !important; letter-spacing:.08em !important; }
+  .size-price { font-size:.95rem !important; font-weight:700 !important; color:var(--cream) !important; }
+  .size-price.hi { color:var(--teal-lt) !important; }
+  .size-cm { display:none !important; }
 
   /* ── Footer ── */
   .footer-inner { grid-template-columns:1fr !important; }
