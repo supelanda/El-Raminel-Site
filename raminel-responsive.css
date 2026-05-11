@@ -1,40 +1,32 @@
 /*
  * raminel-responsive.css
- * Mobile/tablet — desktop layout NEVER touched.
- * 900px tablet | 600px mobile
+ * Mobile/tablet — il layout desktop non viene MAI toccato.
+ * Breakpoints: 900px (tablet) | 600px (mobile) | 400px (small phone)
  */
 
-/* ══════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    TABLET ≤ 900px
-══════════════════════════════════════ */
+══════════════════════════════════════════════════════ */
 @media (max-width: 900px) {
 
-  /* ── Nav: switch to hamburger ── */
-  nav {
-    padding: .9rem 1.5rem !important;
-  }
+  /* ── Nav ── */
+  nav { padding:.9rem 1.5rem !important; }
   .nav-links { display:none !important; }
-  .nav-logo {
-    position:static; transform:none;
-    flex:1; text-align:left;
-  }
+  .nav-logo { position:static; transform:none; flex:1; text-align:left; }
   .nav-hamburger { display:flex; }
   .nav-cta { display:none; }
 
-  /* Mobile nav dropdown */
   .nav-mobile-menu {
-    display:none;
-    position:absolute; top:100%; left:0; right:0;
+    display:none; position:absolute; top:100%; left:0; right:0;
     background:rgba(8,18,21,.98); backdrop-filter:blur(16px);
     border-bottom:1px solid var(--border);
     padding:.5rem 0 1.2rem; flex-direction:column;
   }
   nav.nav-open .nav-mobile-menu { display:flex !important; }
-
   .nav-mobile-menu a {
     display:block; padding:.85rem 1.8rem;
-    font-family:'Raleway', sans-serif; font-size:.85rem; font-weight:600;
-    letter-spacing:.14em; text-transform:uppercase;
+    font-family:'Raleway',sans-serif; font-size:.85rem; font-weight:600;
+    letter-spacing:.12em; text-transform:uppercase;
     color:var(--muted); text-decoration:none;
     border-bottom:1px solid rgba(104,174,186,.07);
     transition:color .2s, background .2s;
@@ -43,140 +35,259 @@
     color:var(--teal-lt); background:rgba(104,174,186,.05);
   }
   .nav-mobile-cta {
-    margin: .8rem 1.8rem 0;
-    display:inline-block; align-self:flex-start;
-    font-family:'Raleway', sans-serif; font-size:.75rem; font-weight:700;
-    letter-spacing:.16em; text-transform:uppercase;
+    margin:.8rem 1.8rem 0; display:inline-block; align-self:flex-start;
+    font-family:'Raleway',sans-serif; font-size:.75rem; font-weight:700;
+    letter-spacing:.14em; text-transform:uppercase;
     background:var(--teal); color:var(--ink);
     border:none !important; padding:.6rem 1.5rem; text-decoration:none;
   }
 
-  /* ── Container ── */
-  .container { padding: 0 1.5rem; }
+  /* ── Layout base ── */
+  .container { padding:0 1.5rem; }
 
-  /* ── Page hero ── */
-  .page-hero { padding: 9rem 1.5rem 3.5rem !important; }
-
-  /* ── Hero (homepage) ── */
-  .hero-split { grid-template-columns: 1fr !important; }
+  /* ── Homepage hero ── */
+  .hero { padding:6rem 1.5rem 4rem; }
+  .hero-split { grid-template-columns:1fr !important; }
   .hero-deco { display:none; }
-  .hero { padding: 6rem 1.5rem 5rem; }
-  .hero-title { font-size: clamp(3.2rem,11vw,5.5rem) !important; }
+  .hero-title { font-size:clamp(3rem,10vw,5rem) !important; }
   .hero-actions { flex-direction:column; align-items:flex-start; gap:.8rem; }
 
   /* ── About ── */
-  .about { padding: 6rem 0; }
-  .about-grid { grid-template-columns: 1fr !important; gap:3rem !important; }
-  .about-visual { max-width:500px; }
-
-  /* ── Menu preview (homepage) ── */
-  .menu-preview { padding: 6rem 0; }
-  .menu-tabs-side { display:none; }
-  .menu-tabs-top { display:flex !important; }
-  .menu-preview-grid { grid-template-columns: 1fr 1fr !important; }
-
-  /* ── Stats band ── */
-  .stats-band-grid { grid-template-columns: 1fr 1fr !important; }
-
-  /* ── Location ── */
-  .location-split { grid-template-columns: 1fr !important; gap:0 !important; }
-  .location-map-block { min-height:380px; }
-
-  /* ── Reviews ── */
-  .reviews-section { padding:6rem 0; }
-  .reviews-masonry { columns: 2 !important; }
-
-  /* ── Menu page ── */
-  .menu-page-layout { grid-template-columns: 1fr !important; }
-  .menu-sidebar { display:none; }
-  .menu-cat-bar { display:flex !important; }
-  .menu-search-row { padding:1.5rem 1.5rem 0 !important; }
-  .menu-cards-area { padding:2rem 1.5rem 5rem !important; }
-  .menu-cards-grid { grid-template-columns: 1fr 1fr !important; }
-  .dough-legend { padding:2.5rem 1.5rem !important; grid-template-columns:1fr !important; }
-
-  /* ── Recensioni page ── */
-  .recens-hero-grid { grid-template-columns:1fr !important; }
-  .score-breakdown { display:none; }
-  .recens-filters { padding:1.5rem 1.5rem !important; }
-  .recens-main { padding:3rem 1.5rem 6rem !important; }
-  .recens-grid { columns:2 !important; }
-
-  /* ── Dove siamo page ── */
-  .dove-split { grid-template-columns:1fr !important; }
-  .dove-map { border-right:none !important; border-bottom:1px solid var(--border); min-height:400px; }
-  .dove-map iframe { min-height:360px; }
-  .dove-info { padding:3rem 1.5rem !important; }
-  .services-grid { grid-template-columns:1fr 1fr !important; }
-  .poi-grid { grid-template-columns:1fr 1fr !important; }
-  .neighbourhood { padding:4rem 1.5rem !important; }
-
-  /* ── Footer ── */
-  .footer-inner { grid-template-columns:1fr 1fr !important; gap:2rem !important; }
-  .footer-bottom { flex-direction:column; align-items:flex-start; }
-}
-
-/* ══════════════════════════════════════
-   MOBILE ≤ 600px
-══════════════════════════════════════ */
-@media (max-width: 600px) {
-
-  body { font-size:16px; }
-  .container { padding:0 1.2rem; }
-
-  /* ── Nav ── */
-  nav { padding:.85rem 1.2rem !important; }
-
-  /* ── Hero ── */
-  .hero { padding:7rem 1.2rem 4rem; }
-  .hero-title { font-size:clamp(2.6rem,13vw,4rem) !important; }
-  .hero-eyebrow { font-size:.68rem; }
-  .hero-actions { flex-direction:column; gap:.8rem; }
-  .hero-actions .btn-primary,
-  .hero-actions .btn-outline { width:100%; text-align:center; }
-
-  /* ── Section titles ── */
-  .section-title { font-size:clamp(1.8rem,7vw,2.6rem); }
-  .page-title    { font-size:clamp(2.2rem,10vw,3.2rem) !important; }
-  .page-hero { padding:8rem 1.2rem 2.5rem !important; }
-
-  /* ── About ── */
-  .about { padding:4rem 0; }
-  .about-frame { aspect-ratio:3/2; }
-
-  /* ── Menu preview (homepage) ── */
-  .menu-preview-grid { grid-template-columns:1fr !important; }
-  .menu-tabs-top { flex-wrap:wrap; }
+  .about { padding:5rem 0; }
+  .about-grid { grid-template-columns:1fr !important; gap:2.5rem !important; }
+  .about-visual { max-width:480px; }
 
   /* ── Stats band ── */
   .stats-band-grid { grid-template-columns:1fr 1fr !important; }
 
-  /* ── Reviews ── */
-  .reviews-masonry { columns:1 !important; }
+  /* ── Menu preview (homepage) ── */
+  .menu-preview { padding:5rem 0; }
+  .menu-tabs-side { display:none; }
+  .menu-tabs-top { display:flex !important; overflow-x:auto; -webkit-overflow-scrolling:touch; flex-wrap:nowrap; }
+  .menu-preview-grid { grid-template-columns:1fr 1fr !important; }
+
+  /* ── Reviews carousel ── */
+  .reviews-section { padding:5rem 0; }
+  .rev-card { width:280px; }
+
+  /* ── Page hero (pagine interne) ── */
+  .page-hero { padding:9rem 1.5rem 3rem !important; display:block !important; }
+
+  /* ── Menu page ── */
+  .menu-page-layout { grid-template-columns:1fr !important; }
+  .menu-sidebar { display:none; }
+  .menu-cat-bar { display:flex !important; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .menu-search-row { padding:1.5rem 1.5rem 0 !important; }
+  .menu-cards-area { padding:2rem 1.5rem 5rem !important; }
+  .menu-cards-grid { grid-template-columns:1fr 1fr !important; }
+  .dough-legend { padding:2.5rem 1.5rem !important; grid-template-columns:1fr !important; }
+
+  /* ── Recensioni ── */
+  .recens-hero-grid { grid-template-columns:1fr !important; }
+  .score-breakdown { display:none; }
+  .recens-filters { padding:1.2rem 1.5rem !important; flex-wrap:wrap; gap:.5rem; }
+  .recens-main { padding:3rem 1.5rem 5rem !important; }
+  .recens-grid { columns:2 !important; }
+
+  /* ── Dove siamo ── */
+  .dove-hero { grid-template-columns:1fr !important; padding:9rem 1.5rem 3rem !important; gap:2rem !important; }
+  .dove-split { grid-template-columns:1fr !important; }
+  .dove-map { border-right:none !important; border-bottom:1px solid var(--border); min-height:360px; }
+  .dove-map iframe { min-height:340px; }
+  .dove-map-full { height:320px !important; }
+  .dove-info { padding:2.5rem 1.5rem !important; }
+  .info-strip { grid-template-columns:1fr !important; }
+  .info-strip-col { padding:2rem 1.5rem !important; border-right:none !important; border-bottom:1px solid var(--border); }
+  .info-strip-col:last-child { border-bottom:none; }
+  .poi-list { max-width:100%; }
+  .poi-grid { grid-template-columns:1fr 1fr !important; }
+  .neighbourhood { padding:4rem 1.5rem !important; }
+  .services-grid { grid-template-columns:1fr 1fr !important; }
+
+  /* ── Asporto ── */
+  .asporto-main { grid-template-columns:1fr !important; }
+  .form-panel { padding:2.5rem 1.5rem !important; border-right:none !important; border-bottom:1px solid var(--border); }
+  .info-panel-aside { padding:2.5rem 1.5rem !important; }
+  .form-row { grid-template-columns:1fr 1fr !important; }
+
+  /* ── Footer ── */
+  .footer-inner { grid-template-columns:1fr 1fr !important; gap:2rem !important; }
+  .footer-bottom { flex-direction:column; align-items:flex-start; gap:.4rem; }
+}
+
+
+/* ══════════════════════════════════════════════════════
+   MOBILE ≤ 600px
+══════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+
+  body { font-size:15px; }
+  .container { padding:0 1.1rem; }
+
+  /* ── Nav ── */
+  nav { padding:.8rem 1.1rem !important; }
+  .nav-logo { font-size:1.05rem !important; }
+
+  /* ── Homepage hero ── */
+  .hero { padding:6.5rem 1.1rem 3rem; }
+  .hero-title { font-size:clamp(2.4rem,12vw,3.6rem) !important; line-height:1.05 !important; }
+  .hero-eyebrow { font-size:.66rem; letter-spacing:.22em; }
+  .hero-sub { font-size:.92rem; }
+  .hero-actions { flex-direction:column; gap:.7rem; }
+  .hero-actions .btn-primary,
+  .hero-actions .btn-outline { width:100%; text-align:center; }
+
+  /* Nascondi la hero-badge su mobile — occupa spazio, le stelle le vede già in Google */
+  .hero-badge { display:none; }
+
+  /* ── Titoli sezioni ── */
+  .section-title { font-size:clamp(1.7rem,7vw,2.4rem); letter-spacing:0; }
+  .section-eyebrow { font-size:.66rem; letter-spacing:.26em; }
+  .section-body { font-size:.94rem; }
+
+  /* ── Page hero (pagine interne) ── */
+  .page-hero { padding:7.5rem 1.1rem 2.2rem !important; }
+  .page-title { font-size:clamp(2rem,10vw,3rem) !important; }
+  .page-sub { font-size:.9rem !important; margin-top:1rem; }
+  .eyebrow { font-size:.66rem; letter-spacing:.26em; }
+
+  /* ── About ── */
+  .about { padding:3.5rem 0; }
+  /* Nascondi la cornice visuale about su mobile — rimane solo il testo */
+  .about-visual { display:none; }
+  .about-features { grid-template-columns:1fr 1fr !important; gap:.6rem; }
+  .feature-tag { padding:.6rem .7rem; font-size:.76rem; }
+
+  /* ── Stats band ── */
+  .stats-band-grid { grid-template-columns:1fr 1fr !important; }
+  /* Nascondi le stat meno importanti — mostra solo le prime 2 */
+  .stat-item:nth-child(n+3) { display:none; }
+  .stat-num { font-size:2.2rem !important; }
+  .stat-label { font-size:.7rem; }
+
+  /* ── Menu preview (homepage) ── */
+  .menu-preview { padding:3.5rem 0; }
+  .menu-preview-grid { grid-template-columns:1fr !important; }
+  .menu-tabs-top { gap:0; }
+  .menu-tab-btn { font-size:.72rem; padding:.65rem .9rem; }
+
+  /* ── Reviews carousel ── */
+  .reviews-section { padding:3.5rem 0; }
+  .reviews-head { flex-direction:column; align-items:flex-start; gap:1rem; margin-bottom:2rem; }
+  /* Nascondi il pulsante "tutte le recensioni" nell'header — c'è già quello sotto il carousel */
+  .reviews-head .btn-outline { display:none; }
+  .rev-card { width:82vw; max-width:300px; }
+  .rev-text { font-size:.84rem; }
 
   /* ── Menu page ── */
   .menu-cards-grid { grid-template-columns:1fr !important; }
-  .menu-cat-bar { overflow-x:auto; -webkit-overflow-scrolling:touch; }
-  .menu-cat-btn { font-size:.72rem !important; padding:.85rem .9rem !important; white-space:nowrap; }
+  .menu-cat-bar { overflow-x:auto; -webkit-overflow-scrolling:touch; flex-wrap:nowrap !important; }
+  .menu-cat-btn { font-size:.7rem !important; padding:.8rem .85rem !important; white-space:nowrap; }
+  /* Nascondi filtri secondari menu su mobile */
+  .sort-controls { display:none; }
+  .veg-toggle { display:none; }
+  .results-count { display:none; }
+  /* Pizza card più compatta */
+  .card-inner { padding:1.2rem 1.2rem 1rem !important; }
+  .card-name { font-size:1rem; }
+  .dough-legend { display:none; }  /* sezione impasti nascosta su mobile */
 
   /* ── Recensioni ── */
   .recens-grid { columns:1 !important; }
-  .hero-score { gap:1.5rem; }
-  .score-big { font-size:3.5rem; }
+  .recens-filters { overflow-x:auto; flex-wrap:nowrap !important; padding:1rem 1.1rem !important; }
+  .filter-pill { white-space:nowrap; font-size:.7rem; padding:.45rem .8rem; }
+  .filter-count { display:none; }
+  .hero-score { gap:1rem; flex-wrap:wrap; }
+  .score-big { font-size:3.2rem; }
+  .score-stars { font-size:1.1rem; }
+  .featured-review { padding:1.8rem 1.3rem !important; }
+  .featured-text { font-size:1rem !important; }
 
   /* ── Dove siamo ── */
-  .dove-map, .dove-map iframe { min-height:280px !important; }
+  .dove-hero { padding:7.5rem 1.1rem 2rem !important; }
+  .dove-hero-card { padding:1.8rem 1.6rem !important; }
+  .dove-map-full { height:240px !important; }
+  .dove-map-full-open { font-size:.62rem; padding:.4rem .8rem; right:.9rem; bottom:.9rem; }
+  .info-strip-col { padding:1.8rem 1.1rem !important; }
+  .isc-label { font-size:.62rem; }
+  .hours-row { font-size:.82rem; }
+  .transport-list { gap:.7rem; }
+  .transport-text { font-size:.8rem; }
+  .services-tags { gap:.4rem; }
+  .service-tag { font-size:.66rem; padding:.25rem .6rem; }
+  .neighbourhood { padding:3rem 1.1rem !important; }
+  .neighbourhood-head { margin-bottom:2.5rem; }
+  .poi-row { grid-template-columns:40px 1fr !important; gap:.8rem; padding:1.8rem 0; }
+  .poi-num { font-size:1.8rem; }
+  .poi-name { font-size:1rem; }
+  .poi-desc { font-size:.82rem; }
+  .dove-map, .dove-map iframe { min-height:240px !important; }
   .services-grid { grid-template-columns:1fr !important; }
-  .poi-grid { grid-template-columns:1fr 1fr !important; }
-  .cta-row { flex-direction:column; }
+  .cta-row { flex-direction:column; gap:.7rem; }
   .cta-row .btn-primary,
   .cta-row .btn-outline,
-  .cta-row .btn-teal { text-align:center; }
+  .cta-row .btn-teal { text-align:center; width:100%; }
+
+  /* ── Asporto ── */
+  .page-hero.asporto-hero { padding:7.5rem 1.1rem 2.5rem !important; }
+  .hero-orari { flex-direction:column; gap:.5rem; }
+  .orario-chip { font-size:.72rem; padding:.45rem .9rem; }
+  .form-panel { padding:2rem 1.1rem !important; }
+  .info-panel-aside { padding:2rem 1.1rem !important; }
+  .form-row { grid-template-columns:1fr !important; gap:0; }  /* ogni campo su riga propria */
+  .menu-highlights { gap:.4rem; }
+  .menu-hl-item { padding:.55rem .8rem; }
+  .menu-hl-name { font-size:.88rem; }
+  .menu-hl-price { font-size:.82rem; }
+  /* Nascondi i dettagli formati/impasti nell'aside — si vede già nel form */
+  .info-panel-aside > .info-sep ~ * { display:none; }
+  .info-panel-aside .btn-outline { display:block !important; }
 
   /* ── Footer ── */
-  .footer-inner { grid-template-columns:1fr !important; }
-  .footer-bottom { flex-direction:column; align-items:flex-start; }
+  .footer-inner { grid-template-columns:1fr !important; gap:1.8rem !important; }
+  .footer-bottom { flex-direction:column; align-items:flex-start; gap:.3rem; }
+  /* Nascondi colonne extra footer su mobile — solo brand e copyright */
+  .footer-inner > div:nth-child(n+2) { display:none; }
+  .footer-logo { font-size:1.3rem; }
+  .footer-tagline { font-size:.78rem; }
+  .footer-copy { font-size:.72rem; }
 
-  /* ── Buttons ── */
-  .btn-primary, .btn-outline, .btn-teal { padding:.85rem 2rem; font-size:.8rem; }
+  /* ── Bottoni ── */
+  .btn-primary, .btn-outline, .btn-teal {
+    padding:.8rem 1.8rem; font-size:.78rem; letter-spacing:.14em;
+  }
+
+  /* ── Form prenotazione (modal) ── */
+  .modal-box { padding:1.8rem 1.2rem 1.6rem !important; }
+  .form-row { grid-template-columns:1fr !important; }
+  .form-submit { font-size:.78rem; letter-spacing:.14em; }
 }
+
+
+/* ══════════════════════════════════════════════════════
+   SMALL PHONE ≤ 400px
+══════════════════════════════════════════════════════ */
+@media (max-width: 400px) {
+
+  .hero-title { font-size:clamp(2.1rem,13vw,2.8rem) !important; }
+  .page-title { font-size:clamp(1.9rem,12vw,2.6rem) !important; }
+  .section-title { font-size:clamp(1.5rem,9vw,2rem); }
+  .rev-card { width:88vw; }
+  .about-features { grid-template-columns:1fr !important; }
+  .menu-cards-grid { grid-template-columns:1fr !important; }
+  .recens-grid { columns:1 !important; }
+  .stats-band-grid { grid-template-columns:1fr !important; }
+}
+
+
+/* ══════════════════════════════════════════════════════
+   UTILITY — visibilità selettiva desktop/mobile
+══════════════════════════════════════════════════════ */
+
+/* Visibile solo su desktop */
+.desktop-only { display:block; }
+@media (max-width: 600px) { .desktop-only { display:none !important; } }
+
+/* Visibile solo su mobile */
+.mobile-only { display:none; }
+@media (max-width: 600px) { .mobile-only { display:block !important; } }
