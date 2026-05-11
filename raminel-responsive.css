@@ -71,8 +71,14 @@
 
   /* ── Menu preview (homepage) ── */
   .menu-preview { padding: 6rem 0; }
-  .menu-tabs-side { display:none; }
-  .menu-tabs-top { display:flex !important; }
+  .menu-tabs-side { display:none !important; }
+  .menu-preview-layout { display:block !important; }
+  .menu-tabs-top {
+    display:flex !important; flex-wrap:nowrap !important;
+    overflow-x:auto !important; -webkit-overflow-scrolling:touch !important;
+    margin-bottom:1.2rem !important; border-bottom:1px solid var(--border);
+  }
+  .menu-tab-top { flex-shrink:0 !important; white-space:nowrap; padding:.8rem 1.2rem !important; }
   .menu-preview-grid { grid-template-columns: 1fr 1fr !important; }
 
   /* ── Stats band ── */
@@ -94,6 +100,16 @@
   .menu-cards-area { padding:2rem 1.5rem 5rem !important; }
   .menu-cards-grid { grid-template-columns: 1fr 1fr !important; }
   .dough-legend { padding:2.5rem 1.5rem !important; grid-template-columns:1fr !important; }
+
+
+  /* ── Menu page: card full bleed mobile ── */
+  .menu-cards-area { padding:1.5rem 0 5rem !important; }
+  .menu-search-row { padding:1.5rem 1.2rem 0 !important; }
+  .menu-cat-bar { padding:0 !important; }
+  .pizza-card {
+    border-left:none !important; border-right:none !important;
+    /* già full-width grazie al flex column sul grid */
+  }
 
   /* ── Recensioni page ── */
   .recens-hero-grid { grid-template-columns:1fr !important; }
@@ -172,69 +188,6 @@
   .cta-row .btn-primary,
   .cta-row .btn-outline,
   .cta-row .btn-teal { text-align:center; }
-
-  /* ══ MENU PAGE — layout McDonald's ══════════════════════ */
-
-  /* Grid → lista verticale */
-  .menu-cards-grid {
-    display:flex !important; flex-direction:column !important;
-    gap:0 !important; background:transparent !important;
-    border:none !important; border-top:1px solid var(--border);
-    max-width:100%; overflow-x:hidden;
-  }
-
-  /* Ogni card = riga orizzontale compatta */
-  .pizza-card {
-    display:flex !important; flex-direction:row !important;
-    align-items:center !important; padding:0 !important;
-    border-bottom:1px solid var(--border-s) !important;
-    border-left:none !important; border-top:none !important; border-right:none !important;
-    min-height:60px !important; background:var(--charcoal) !important;
-  }
-  .pizza-card:hover { background:var(--panel) !important; }
-  .pizza-card::before { opacity:1 !important; width:3px !important; left:0 !important; }
-
-  /* Lato sinistro: testo */
-  .card-inner {
-    flex:1 !important; min-width:0 !important;
-    padding:.65rem .8rem .65rem .85rem !important;
-    display:flex !important; flex-direction:column !important;
-    justify-content:center !important; gap:.15rem !important;
-  }
-  .card-top { margin-bottom:.05rem !important; }
-  .card-badges { display:flex !important; gap:.3rem !important; flex-wrap:nowrap !important; }
-  .badge { font-size:.52rem !important; padding:.1rem .38rem !important; letter-spacing:.06em !important; }
-  .card-name {
-    font-size:.96rem !important; font-weight:600 !important;
-    white-space:nowrap !important; overflow:hidden !important;
-    text-overflow:ellipsis !important; margin-bottom:0 !important;
-  }
-  .card-desc {
-    display:block !important;
-    font-size:.74rem !important; color:var(--muted) !important;
-    white-space:nowrap !important; overflow:hidden !important;
-    text-overflow:ellipsis !important; margin-bottom:0 !important;
-    font-style:italic !important;
-  }
-  .card-doughs { display:none !important; }
-
-  /* Lato destro: solo prezzo Normale */
-  .card-footer {
-    flex-shrink:0 !important; display:flex !important;
-    flex-direction:column !important; align-items:flex-end !important;
-    justify-content:center !important;
-    padding:.65rem .9rem .65rem .3rem !important;
-    background:transparent !important; border-top:none !important;
-  }
-  .size-col:nth-child(1) { display:none !important; }
-  .size-col:nth-child(3) { display:none !important; }
-  .size-col:nth-child(2) {
-    display:flex !important; flex-direction:column !important; align-items:flex-end !important;
-  }
-  .size-name { font-size:.58rem !important; color:var(--muted) !important; text-transform:uppercase !important; letter-spacing:.08em !important; }
-  .size-price { font-size:.95rem !important; font-weight:700 !important; color:var(--cream) !important; }
-  .size-price.hi { color:var(--teal-lt) !important; }
-  .size-cm { display:none !important; }
 
   /* ── Footer ── */
   .footer-inner { grid-template-columns:1fr !important; }
