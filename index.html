@@ -324,16 +324,14 @@
     <div class="menu-preview-layout reveal">
       <div class="menu-tabs-side">
         <button class="menu-tab-side active" data-cat="pizza">🍕 Pizza</button>
-        <button class="menu-tab-side" data-cat="primi">🍝 Primi</button>
-        <button class="menu-tab-side" data-cat="secondi">🥩 Secondi</button>
+        <button class="menu-tab-side" data-cat="cucina">🍝 Cucina</button>
         <button class="menu-tab-side" data-cat="dolci">🍮 Dolci</button>
       </div>
       <div>
         <div class="menu-tabs-top" id="menuTabsTop">
-          <button class="menu-tab-top active" data-cat="pizza">Pizza</button>
-          <button class="menu-tab-top" data-cat="primi">Primi</button>
-          <button class="menu-tab-top" data-cat="secondi">Secondi</button>
-          <button class="menu-tab-top" data-cat="dolci">Dolci</button>
+          <button class="menu-tab-top active" data-cat="pizza">🍕 Pizza</button>
+          <button class="menu-tab-top" data-cat="cucina">🍝 Cucina</button>
+          <button class="menu-tab-top" data-cat="dolci">🍮 Dolci</button>
         </div>
         <div class="menu-preview-grid" id="menuPreviewGrid">
           <div class="menu-item" data-cat="pizza"><span class="menu-item-cat">Pizza</span><div class="menu-item-name">Margherita</div><div class="menu-item-desc">Pomodoro, fior di latte, basilico fresco, olio EVO.</div><div class="menu-item-price"><span class="from">da</span>€ 7,00</div></div>
@@ -341,7 +339,8 @@
           <div class="menu-item" data-cat="pizza"><span class="menu-item-cat">Pizza</span><div class="menu-item-name">Burrata e Crudo</div><div class="menu-item-desc">Burrata fresca, prosciutto crudo, pomodorini, rucola e olio EVO.</div><div class="menu-item-price"><span class="from">da</span>€ 11,00</div></div>
           <div class="menu-item" data-cat="pizza"><span class="menu-item-cat">Pizza</span><div class="menu-item-name">Pancetta e Patate</div><div class="menu-item-desc">Pancetta croccante, patate a fettine, rosmarino, fior di latte.</div><div class="menu-item-price"><span class="from">da</span>€ 9,00</div></div>
           <div class="menu-item" data-cat="pizza"><span class="menu-item-cat">Pizza · Integrale</span><div class="menu-item-name">Speck &amp; Gorgonzola</div><div class="menu-item-desc">Speck Alto Adige, gorgonzola dolce, noci e miele di montagna.</div><div class="menu-item-price"><span class="from">da</span>€ 10,00</div></div>
-          <div class="menu-item" data-cat="pizza"><span class="menu-item-cat">Pizza</span><div class="menu-item-name">Quattro Formaggi</div><div class="menu-item-desc">Fior di latte, gorgonzola, asiago trentino, grana padano.</div><div class="menu-item-price"><span class="from">da</span>€ 9,00</div></div><div class="menu-item-desc">Affettata finemente con fagioli bianchi, olio EVO e rucola fresca.</div><div class="menu-item-price">€ 10,00</div></div><div class="menu-item-desc">Con scaglie di grana, rucola selvatica e limone.</div><div class="menu-item-price">€ 12,00</div></div><div class="menu-item-desc">Selezione stagionale con olio aromatico e erbe del Trentino.</div><div class="menu-item-price">€ 9,00</div></div><div class="menu-item-desc">Cozze fresche in brodetto di pomodoro e pepe nero. Ottima, genuina.</div><div class="menu-item-price">€ 11,00</div></div><div class="menu-item-desc">Insalata mista abbondante con ingredienti freschi di stagione.</div><div class="menu-item-price">€ 8,00</div></div><div class="menu-item-desc">Tomino gratinato con miele, noci e pane tostato.</div><div class="menu-item-price">€ 9,00</div></div>
+          <div class="menu-item" data-cat="pizza"><span class="menu-item-cat">Pizza</span><div class="menu-item-name">Quattro Formaggi</div><div class="menu-item-desc">Fior di latte, gorgonzola, asiago trentino, grana padano.</div><div class="menu-item-price"><span class="from">da</span>€ 9,00</div></div>
+
 
           <div class="menu-item" data-cat="primi"><span class="menu-special-tag">Signature</span><span class="menu-item-cat">Primo · Mare</span><div class="menu-item-name">Spaghetti allo Scoglio</div><div class="menu-item-desc">Pasta fresca con frutti di mare, pomodorini, aglio e prezzemolo.</div><div class="menu-item-price">€ 15,00</div></div>
           <div class="menu-item" data-cat="primi"><span class="menu-item-cat">Primo · Terra</span><div class="menu-item-name">Tagliatelle al Ragù di Cinghiale</div><div class="menu-item-desc">Pasta fatta in casa al ragù di cinghiale trentino — lenta cottura.</div><div class="menu-item-price">€ 14,00</div></div>
@@ -472,7 +471,14 @@
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
   const menuItems = document.querySelectorAll('#menuPreviewGrid .menu-item');
-  function filterMenuPreview(cat) { menuItems.forEach(i => { i.style.display = i.dataset.cat === cat ? '' : 'none'; }); }
+  function filterMenuPreview(cat) {
+    menuItems.forEach(i => {
+      const match = cat === 'cucina'
+        ? ['primi','secondi'].includes(i.dataset.cat)
+        : i.dataset.cat === cat;
+      i.style.display = match ? '' : 'none';
+    });
+  }
   filterMenuPreview('pizza');
   document.querySelectorAll('.menu-tab-side, .menu-tab-top').forEach(btn => {
     btn.addEventListener('click', () => {
